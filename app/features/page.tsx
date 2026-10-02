@@ -19,13 +19,13 @@ export const metadata: Metadata = {
 
 const detail: Record<string, { headline: string; body: string; points: string[]; screen: ReactNode }> = {
   "task-creation": {
-    headline: "Create a task in minutes, not hours",
-    body: "Homework, quizzes, projects or reading. Build it once and send it to as many classes as you like.",
+    headline: "Turn every lesson into actionable practice",
+    body: "Create tasks and assignments for your students and track their completion. Students work through their assigned activities, while you see what's done and what still needs attention.",
     points: [
-      "Assign to a whole class, a group, or one student",
-      "Set due dates and automatic reminders",
-      "Attach worksheets, images and files from your library",
-      "Save any task as a template to reuse next term",
+      "Create tasks and assignments for students",
+      "Students work on assigned activities",
+      "See what's done and what's pending",
+      "Rate each assignment with feedback",
     ],
     screen: <TaskScreen />,
   },

@@ -58,12 +58,12 @@ function AppBar({ title, sub }: { title: string; sub?: string }) {
 export function TaskScreen() {
   return (
     <>
-      <AppBar sub="New task" title="Fractions practice" />
+      <AppBar sub="New task" title="Für Elise practice" />
       <div className="space-y-2.5 px-4">
         <div className="rounded-xl bg-cream p-3">
           <p className="text-[10px] font-semibold text-ink-soft">Assign to</p>
           <div className="mt-1.5 flex flex-wrap gap-1.5">
-            {["Class 5A", "Class 5B"].map((c) => (
+            {["Kevin Shah", "Sara Khan"].map((c) => (
               <span key={c} className="rounded-full bg-butter px-2.5 py-1 text-[10px] font-bold">{c}</span>
             ))}
             <span className="rounded-full border border-dashed border-ink/30 px-2.5 py-1 text-[10px] font-semibold text-ink-soft">+ Add</span>
@@ -74,8 +74,8 @@ export function TaskScreen() {
           <p className="text-xs font-bold">Friday, 4:00 PM</p>
         </div>
         <div className="rounded-xl bg-cream p-3">
-          <p className="text-[10px] font-semibold text-ink-soft">Questions</p>
-          {["Shade ¾ of the shape", "Compare ⅖ and ⅗", "Word problem"].map((q, i) => (
+          <p className="text-[10px] font-semibold text-ink-soft">Activities</p>
+          {["Bars 1–8", "C major scale", "Sight-reading ex. 4"].map((q, i) => (
             <p key={q} className="mt-1.5 flex items-center gap-2 text-[11px] font-medium">
               <span className="grid h-4 w-4 place-items-center rounded-full bg-white text-[9px] font-bold">{i + 1}</span>
               {q}
