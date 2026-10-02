@@ -12,16 +12,15 @@ import { Testimonials } from "@/components/Testimonials";
 import { Button, SectionHeading, Sparkle, StoreBadges, Underline } from "@/components/ui";
 import { features } from "@/lib/site";
 
-const subjects = [
-  ["➗", "Maths", "bg-butter"],
-  ["🔬", "Science", "bg-mint"],
-  ["📖", "English", "bg-lilac"],
-  ["🕉️", "Hindi", "bg-peach"],
-  ["🌍", "Social Studies", "bg-aqua"],
-  ["💻", "Computers", "bg-sky"],
-  ["🎨", "Art", "bg-butter"],
-  ["🎵", "Music", "bg-mint"],
-  ["⚽", "Sports", "bg-peach"],
+const instruments: { emoji: string; label: string; color: string; soon?: boolean }[] = [
+  { emoji: "🎹", label: "Piano", color: "bg-butter" },
+  { emoji: "🎼", label: "Theory of Music", color: "bg-lilac" },
+  { emoji: "🎸", label: "Guitar", color: "bg-peach", soon: true },
+  { emoji: "🎤", label: "Singing", color: "bg-mint", soon: true },
+  { emoji: "🥁", label: "Drums", color: "bg-aqua", soon: true },
+  { emoji: "🎻", label: "Violin", color: "bg-sky", soon: true },
+  { emoji: "🪈", label: "Flute", color: "bg-butter", soon: true },
+  { emoji: "🪘", label: "Tabla", color: "bg-peach", soon: true },
 ];
 
 function Hero() {
@@ -77,15 +76,24 @@ function Hero() {
   );
 }
 
-function SubjectRow() {
+function InstrumentRow() {
   return (
     <section className="py-10">
-      <h2 className="text-center text-2xl font-black sm:text-3xl">Made for every subject</h2>
-      <ul className="mx-auto mt-6 flex max-w-6xl gap-5 overflow-x-auto px-4 pb-2 sm:justify-center sm:px-6">
-        {subjects.map(([emoji, label, color]) => (
-          <li key={label} className="flex w-20 shrink-0 flex-col items-center gap-2">
-            <span className={`grid h-14 w-14 place-items-center rounded-full text-2xl ring-4 ring-white ${color}`}>{emoji}</span>
-            <span className="text-center text-xs font-semibold">{label}</span>
+      <h2 className="text-center text-2xl font-black sm:text-3xl">Made for every Instrument</h2>
+      <ul className="mx-auto mt-6 flex max-w-6xl gap-5 overflow-x-auto px-4 pb-2 pt-2 sm:justify-center sm:px-6">
+        {instruments.map(({ emoji, label, color, soon }) => (
+          <li key={label} className="flex w-24 shrink-0 flex-col items-center gap-2">
+            <span className="relative">
+              <span className={`grid h-16 w-16 place-items-center rounded-full text-3xl ring-4 ring-white ${color} ${soon ? "opacity-60 grayscale-[60%]" : ""}`}>
+                {emoji}
+              </span>
+              {soon && (
+                <span className="absolute -right-3 -top-2 rounded-full bg-ink px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                  Soon
+                </span>
+              )}
+            </span>
+            <span className={`text-center text-sm font-semibold leading-tight ${soon ? "text-ink-soft" : ""}`}>{label}</span>
           </li>
         ))}
       </ul>
@@ -233,7 +241,7 @@ export default function Home() {
     <>
       <div className="bg-white">
         <Hero />
-        <SubjectRow />
+        <InstrumentRow />
       </div>
       <FeatureBento />
       <TeacherCan />
