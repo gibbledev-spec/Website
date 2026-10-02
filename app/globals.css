@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand */
+  --color-cream: #fbf6ec;
+  --color-cream-deep: #f4ecdc;
+  --color-ink: #1d1b16;
+  --color-ink-soft: #57524a;
+  --color-line: #e7dfcf;
+  --color-brand: #f0480e;
+  --color-brand-dark: #c93a08;
+
+  /* Pastels */
+  --color-butter: #fde68a;
+  --color-mint: #cdeec3;
+  --color-lilac: #ead6f6;
+  --color-aqua: #c2e9e4;
+  --color-peach: #ffd9c4;
+  --color-sky: #d4e4ff;
+
+  /* Accents used inside cards */
+  --color-butter-ink: #8a5a00;
+  --color-mint-ink: #1f6b2c;
+  --color-lilac-ink: #6b2c8f;
+  --color-aqua-ink: #11605a;
+  --color-peach-ink: #a3380c;
+
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-marquee-reverse: marquee 40s linear infinite reverse;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 100, "WONK" 0;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-brand);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
