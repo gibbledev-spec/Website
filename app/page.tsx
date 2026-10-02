@@ -210,18 +210,19 @@ function TeacherCan() {
 
 function HowItWorks() {
   const steps = [
-    ["Download Gibble", "Get the app on your phone or tablet from the App Store or Google Play.", "bg-peach"],
-    ["Create your class", "Add your sections and invite students with a simple class code.", "bg-aqua"],
-    ["Assign your first task", "Pick from your library or start fresh. Ratings and progress follow automatically.", "bg-sky"],
+    ["Download", "Get Gibble on your phone or tablet from the App Store or Google Play.", "bg-peach"],
+    ["Create Your Profile", "Sign up as a teacher and set up your profile with the instruments you teach.", "bg-aqua"],
+    ["Add Students", "Add each student and create their profile with their level, instrument and lesson times.", "bg-sky"],
+    ["Manage their classes and learning journey", "Plan their classes, create lessons and follow their progress, all in one place.", "bg-butter"],
   ];
   return (
     <section className="px-4 py-16 sm:px-6">
-      <SectionHeading title="Up and running in three steps" />
-      <ol className="mx-auto mt-10 grid max-w-6xl gap-4 md:grid-cols-3">
+      <SectionHeading title="Up and running in four steps" />
+      <ol className="mx-auto mt-10 grid max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map(([t, d, c], i) => (
           <li key={t} className="rounded-[1.75rem] bg-white p-7 ring-1 ring-line">
             <span className={`grid h-12 w-12 place-items-center rounded-full font-display text-xl font-black ${c}`}>{i + 1}</span>
-            <h3 className="mt-5 text-2xl font-black">{t}</h3>
+            <h3 className="mt-5 text-xl font-black leading-tight sm:text-2xl">{t}</h3>
             <p className="mt-2 text-ink-soft">{d}</p>
           </li>
         ))}
