@@ -24,18 +24,13 @@
   --color-lilac-ink: #6b2c8f;
   --color-aqua-ink: #11605a;
   --color-peach-ink: #a3380c;
+  --color-sky-ink: #1f4a9c;
 
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
 
-  --animate-marquee: marquee 40s linear infinite;
-  --animate-marquee-reverse: marquee 40s linear infinite reverse;
   --animate-float: float 6s ease-in-out infinite;
 
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
   @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-8px); }

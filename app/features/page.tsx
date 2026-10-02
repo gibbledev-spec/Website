@@ -1,13 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import {
-  ClassScreen,
-  LibraryScreen,
-  PhoneFrame,
-  ProgressScreen,
-  RatingScreen,
-  TaskScreen,
-} from "@/components/devices";
+import { PhoneFrame, TabletFrame, screens } from "@/components/devices";
 import { PageHero } from "@/components/PageHero";
 import { DeviceBanner, DownloadCta, FeatureRow } from "@/components/sections";
 import { features } from "@/lib/site";
@@ -17,61 +10,72 @@ export const metadata: Metadata = {
   description: "Task creation, task rating, progress tracking, a resource library and class management, in one app for teachers.",
 };
 
-const detail: Record<string, { headline: string; body: string; points: string[]; screen: ReactNode }> = {
+const detail: Record<string, { headline: string; body: string; points: string[]; visual: ReactNode }> = {
   "task-creation": {
-    headline: "Create a task in minutes, not hours",
-    body: "Homework, quizzes, projects or reading. Build it once and send it to as many classes as you like.",
+    headline: "Turn every lesson into actionable practice",
+    body: "Create tasks and assignments for your students and track their completion. Students work through their assigned activities, while you see what's done and what still needs attention.",
     points: [
-      "Assign to a whole class, a group, or one student",
-      "Set due dates and automatic reminders",
-      "Attach worksheets, images and files from your library",
-      "Save any task as a template to reuse next term",
+      "Create tasks and assignments for students",
+      "Students work on assigned activities",
+      "See what's done and what's pending",
+      "Rate each assignment with feedback",
     ],
-    screen: <TaskScreen />,
+    visual: <PhoneFrame screenshot={screens.phoneTaskCreation} />,
   },
   "task-rating": {
-    headline: "Rate work with feedback that helps",
-    body: "Review submissions on the go and give every student a clear, kind response.",
+    headline: "Rate every task on what matters",
+    body: "Each task is rated on technique, body posture and reading ability. The average becomes the task's overall rating, which shows up in the student's progress tracker.",
     points: [
-      "Star ratings with a quick written note",
-      "Ready-made praise and suggestions to save time",
-      "See who has submitted and who hasn't at a glance",
-      "Students are notified as soon as you rate",
+      "Rate each task individually",
+      "Score technique, posture and reading",
+      "Average becomes the task rating",
+      "Ratings feed the progress tracker",
     ],
-    screen: <RatingScreen />,
+    visual: <PhoneFrame screenshot={screens.phoneTaskRating} />,
   },
   "progress-tracker": {
-    headline: "Watch every learner grow",
-    body: "Every rating builds a picture of progress, for each student and each class.",
+    headline: "Track every student's learning journey",
+    body: "Give every student a structured path to progress. Gibble organises learning across two key areas: practical music and music theory.",
     points: [
-      "Trends over weeks and terms, not just one test",
-      "Highlights students who may need extra help",
-      "Compare sections side by side",
-      "Share progress summaries with parents and school leaders",
+      "Track practical instrument learning",
+      "Follow practice, tasks and performance",
+      "Teach theory alongside practical lessons",
+      "Build technique and understanding",
     ],
-    screen: <ProgressScreen />,
+    visual: <TabletFrame screenshot={screens.tabletProgress} />,
   },
   library: {
-    headline: "All your resources, in one tidy place",
-    body: "Stop digging through folders and chats. Your teaching material lives where your tasks do.",
+    headline: "Build your own music library",
+    body: "Create a centralised library for your teaching resources. Instead of searching through folders, chats, drives and different platforms, keep all your music resources in one organised space.",
     points: [
-      "Store worksheets, notes, videos and quizzes",
-      "Organise by subject, class or topic",
-      "Search everything instantly",
-      "Add any resource to a task in one tap",
+      "Store sheets, audio and videos",
+      "Keep all your learning materials",
+      "Arrange resources by learning level",
+      "Share materials with students easily",
     ],
-    screen: <LibraryScreen />,
+    visual: <PhoneFrame screenshot={screens.phoneMusicLibrary} />,
   },
   "class-management": {
-    headline: "Every class, organised",
-    body: "Set up classes and students once, and Gibble keeps everything sorted from there.",
+    headline: "Keep all your students organised in one place",
+    body: "Whether you teach a handful of students or many, Gibble keeps you organised without scattered notes, spreadsheets or multiple tools.",
     points: [
-      "Create classes and sections in seconds",
-      "Invite students with a simple class code",
-      "Switch between classes from one home screen",
-      "Archive old classes at the end of the year",
+      "Create individual student profiles",
+      "See each student's learning journey",
+      "Track progress, tasks and activities",
+      "Replace notes, spreadsheets and apps",
     ],
-    screen: <ClassScreen />,
+    visual: <PhoneFrame screenshot={screens.phoneMyStudents} />,
+  },
+  "ai-assistant": {
+    headline: "Less time searching, more time teaching",
+    body: "Gibble brings assistive intelligence into your workflow. Ask about students, their learning journey, progress, assignments or classes using voice or text, without moving through multiple screens.",
+    points: [
+      "Talk or type to Gibble's AI",
+      "Ask about students and progress",
+      "Check assignments and classes fast",
+      "Hands-free voice while you teach",
+    ],
+    visual: <PhoneFrame screenshot={screens.phoneAiAssistant} />,
   },
 };
 
@@ -79,7 +83,7 @@ export default function FeaturesPage() {
   return (
     <>
       <PageHero eyebrow="Features" title="Everything a teacher needs, in one joyful app">
-        Five tools that work together, from the moment you set a task to the moment you see a student improve.
+        Six tools that work together, from the moment you set a task to the moment you see a student improve.
       </PageHero>
 
       <nav aria-label="Features" className="sticky top-[72px] z-40 bg-cream/90 px-4 py-3 backdrop-blur sm:px-6">
@@ -112,7 +116,7 @@ export default function FeaturesPage() {
                     {d.headline}
                   </>
                 }
-                visual={<PhoneFrame>{d.screen}</PhoneFrame>}
+                visual={d.visual}
               >
                 <p>{d.body}</p>
                 <ul className="space-y-2 pt-2 text-base text-ink">
