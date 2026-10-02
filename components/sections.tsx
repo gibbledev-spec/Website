@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { PhoneFrame, TabletFrame, screens } from "./devices";
-import { Avatar, SectionHeading, Sparkle, Squiggle, StoreBadges } from "./ui";
+import { Sparkle, Squiggle, StoreBadges } from "./ui";
 
 /* Zig-zag row: visual on one side, copy on the other */
 export function FeatureRow({
@@ -63,48 +63,6 @@ export function DeviceBanner() {
         </div>
       </div>
     </div>
-  );
-}
-
-/* Endless scrolling strip of praise pills */
-const praise = [
-  ["Well done!", "bg-butter", "AK"],
-  ["Shabash!", "bg-mint", "RS"],
-  ["Excellent work", "bg-lilac", "PN"],
-  ["बहुत बढ़िया!", "bg-peach", "MV"],
-  ["Great effort!", "bg-aqua", "DJ"],
-  ["Keep it up!", "bg-sky", "SR"],
-  ["Superb!", "bg-butter", "TK"],
-  ["Brilliant answer", "bg-mint", "AN"],
-];
-
-function PraiseRow({ reverse = false }: { reverse?: boolean }) {
-  const items = [...praise, ...praise];
-  return (
-    <div className="flex overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
-      <ul className={`flex shrink-0 gap-3 pr-3 ${reverse ? "animate-marquee-reverse" : "animate-marquee"}`}>
-        {items.map(([text, color, initials], i) => (
-          <li key={i} aria-hidden={i >= praise.length} className={`flex items-center gap-2 whitespace-nowrap rounded-full py-1.5 pl-1.5 pr-5 font-display text-lg font-bold ${color}`}>
-            <Avatar initials={initials} color="bg-white" />
-            {text}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-export function PraiseMarquee() {
-  return (
-    <section className="py-20">
-      <SectionHeading title="A little praise goes a long way">
-        Every rating on Gibble comes with a kind word. Students feel seen, and they keep coming back.
-      </SectionHeading>
-      <div className="mt-10 space-y-3">
-        <PraiseRow />
-        <PraiseRow reverse />
-      </div>
-    </section>
   );
 }
 

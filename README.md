@@ -17,7 +17,7 @@ npm run lint     # type check
 
 | Path | Page |
 | --- | --- |
-| `app/page.tsx` | Home: hero, subjects, feature bento, mobile & tablet banner, teacher workflows, how it works, testimonials, praise strip, download CTA |
+| `app/page.tsx` | Home: hero, instruments, feature bento, mobile & tablet banner, teacher workflows, how it works, download CTA |
 | `app/features/` | Features in detail: Task Creation, Task Rating, Progress Tracker, Library, Class Management |
 | `app/pricing/` | Plans, comparison table, FAQ |
 | `app/about/` | Story, values, team, contact form |
@@ -32,7 +32,6 @@ Search the code for `TODO`. Main items:
 - `lib/site.ts`: store links, email, phone, social links
 - `components/devices.tsx`: app screens are HTML mock-ups; swap in real screenshots
 - `components/ui.tsx`: store badges are drafts; use the official Apple / Google artwork
-- `components/Testimonials.tsx`: testimonials
 - `app/pricing/page.tsx`: plan prices and limits
 - `app/about/page.tsx`: story and team
 - `app/privacy/`, `app/terms/`: legal text

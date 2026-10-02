@@ -127,11 +127,3 @@ export function Underline({ className = "" }: { className?: string }) {
     </svg>
   );
 }
-
-export function Avatar({ initials, color }: { initials: string; color: string }) {
-  return (
-    <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-full text-xs font-bold text-ink ring-2 ring-white ${color}`}>
-      {initials}
-    </span>
-  );
-}

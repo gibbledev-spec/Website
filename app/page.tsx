@@ -6,8 +6,7 @@ import {
   TabletFrame,
   screens,
 } from "@/components/devices";
-import { DeviceBanner, DownloadCta, FeatureRow, PraiseMarquee } from "@/components/sections";
-import { Testimonials } from "@/components/Testimonials";
+import { DeviceBanner, DownloadCta, FeatureRow } from "@/components/sections";
 import { Button, SectionHeading, Sparkle, StoreBadges, Underline } from "@/components/ui";
 import { features } from "@/lib/site";
 
@@ -249,8 +248,6 @@ export default function Home() {
       <FeatureBento />
       <TeacherCan />
       <HowItWorks />
-      <Testimonials />
-      <PraiseMarquee />
       <DownloadCta />
     </>
   );
