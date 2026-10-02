@@ -17,13 +17,6 @@ const cycle = [
   ["📈", "Progress", "Ratings show what's improving, so the next lesson starts in the right place.", "bg-aqua"],
 ];
 
-// TODO: replace with the real team.
-const team = [
-  ["Founder Name", "Co-founder & CEO", "bg-peach"],
-  ["Founder Name", "Co-founder & CTO", "bg-sky"],
-  ["Team Member", "Head of Design", "bg-butter"],
-  ["Team Member", "Teacher Success", "bg-mint"],
-];
 
 export default function AboutPage() {
   return (
@@ -78,21 +71,6 @@ export default function AboutPage() {
         <p className="mx-auto mt-5 flex w-fit items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-bold ring-1 ring-line">
           <span aria-hidden>↺</span> Then the cycle starts again, one lesson at a time.
         </p>
-      </section>
-
-      <section className="px-4 py-16 sm:px-6">
-        <SectionHeading title="The team" />
-        <ul className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-6 md:grid-cols-4">
-          {team.map(([n, r, c], i) => (
-            <li key={i} className="text-center">
-              <div className={`mx-auto grid aspect-square w-full max-w-[180px] place-items-center rounded-[2rem] font-display text-4xl font-black ${c}`}>
-                {n.split(" ").map((w) => w[0]).join("")}
-              </div>
-              <p className="mt-3 font-bold">{n}</p>
-              <p className="text-sm text-ink-soft">{r}</p>
-            </li>
-          ))}
-        </ul>
       </section>
 
       <section id="contact" className="scroll-mt-24 px-4 py-16 sm:px-6">
