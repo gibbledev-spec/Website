@@ -20,12 +20,24 @@
     --shadow: 0 1px 2px rgba(20, 24, 33, .04), 0 12px 32px -8px rgba(20, 24, 33, .14);
     --scrim: rgba(20, 24, 33, 0);
     --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    /* AI feature tints, taken from the AI tab icon's gradient */
+    --pink-bg: #fdeef4; --pink-fg: #d0336f;
+    --violet-bg: #f3edfd; --violet-fg: #7438d9;
+    --indigo-bg: #eef0fe; --indigo-fg: #4b4fe0;
+    --blue-bg: #ebf2fe; --blue-fg: #2f6ae8;
+    --wash: linear-gradient(135deg, rgba(226,69,127,.10), rgba(123,63,228,.08) 45%, rgba(59,92,240,.06) 75%, rgba(59,92,240,0));
+    --ai-grad: linear-gradient(135deg, var(--ai-a), var(--ai-b) 55%, var(--ai-c));
+    --glow: 0 6px 18px -6px rgba(123,63,228,.55);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #121418; --surface: #1b1e24; --fg: #eceef2; --fg-soft: #a6acb8; --fg-faint: #7c828e;
       --line: #2c3038; --line-soft: #23262d; --accent: #7d9bff; --accent-tint: #222a40;
       --nav-ring: #4a2c3a; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 40px -8px rgba(0,0,0,.6);
+      --pink-bg: #3a1e2a; --pink-fg: #f58ab2; --violet-bg: #2c2240; --violet-fg: #b996ff;
+      --indigo-bg: #24264a; --indigo-fg: #9ea2ff; --blue-bg: #1e2a44; --blue-fg: #86aaff;
+      --wash: linear-gradient(135deg, rgba(226,69,127,.18), rgba(123,63,228,.14) 45%, rgba(59,92,240,.08) 75%, rgba(59,92,240,0));
+      --glow: 0 6px 20px -6px rgba(150,100,255,.6);
       color-scheme: dark;
     }
   }
@@ -33,6 +45,10 @@
     --bg: #121418; --surface: #1b1e24; --fg: #eceef2; --fg-soft: #a6acb8; --fg-faint: #7c828e;
     --line: #2c3038; --line-soft: #23262d; --accent: #7d9bff; --accent-tint: #222a40;
     --nav-ring: #4a2c3a; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 40px -8px rgba(0,0,0,.6);
+      --pink-bg: #3a1e2a; --pink-fg: #f58ab2; --violet-bg: #2c2240; --violet-fg: #b996ff;
+      --indigo-bg: #24264a; --indigo-fg: #9ea2ff; --blue-bg: #1e2a44; --blue-fg: #86aaff;
+      --wash: linear-gradient(135deg, rgba(226,69,127,.18), rgba(123,63,228,.14) 45%, rgba(59,92,240,.08) 75%, rgba(59,92,240,0));
+      --glow: 0 6px 20px -6px rgba(150,100,255,.6);
     color-scheme: dark;
   }
 
@@ -87,42 +103,68 @@
   /* ---------- Coming-soon popover ---------- */
   .pop {
     position: absolute; left: 50%; bottom: calc(100% + 12px);
-    width: min(340px, calc(100vw - 32px));
-    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
-    box-shadow: var(--shadow); padding: 18px 18px 16px; text-align: left;
-    transform: translate(-50%, 4px); opacity: 0; visibility: hidden;
-    transition: opacity .16s ease, transform .16s ease, visibility 0s linear .16s;
+    width: min(352px, calc(100vw - 32px));
+    /* gradient hairline border: padding-box fill over a border-box gradient */
+    border: 1px solid transparent; border-radius: 16px;
+    background:
+      var(--wash) padding-box,
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(135deg, rgba(226,69,127,.45), rgba(123,63,228,.35) 40%, var(--line) 75%) border-box;
+    box-shadow: var(--shadow); padding: 18px 18px 14px; text-align: left;
+    transform: translate(-50%, 6px) scale(.98); transform-origin: 50% 100%; opacity: 0; visibility: hidden;
+    transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
   }
-  .pop.is-open { opacity: 1; visibility: visible; transform: translate(-50%, 0); transition: opacity .16s ease, transform .16s ease; }
+  .pop.is-open { opacity: 1; visibility: visible; transform: translate(-50%, 0) scale(1); transition: opacity .18s ease, transform .2s cubic-bezier(.2,.9,.3,1.2); }
   .pop::after { /* caret pointing at the AI tab */
     content: ""; position: absolute; left: var(--caret-x, 50%); bottom: -6px; width: 10px; height: 10px;
     background: var(--surface); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
     transform: translateX(-50%) rotate(45deg);
   }
-  .pop-head { display: flex; align-items: flex-start; gap: 10px; }
+  .pop-head { display: flex; align-items: flex-start; gap: 12px; }
   .pop-head > div { flex: 1; min-width: 0; }
-  .eyebrow { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 6px; font-size: 11px; font-weight: 600;
-    letter-spacing: .06em; text-transform: uppercase; color: var(--fg-faint); }
-  .eyebrow i { width: 6px; height: 6px; border-radius: 50%; background: linear-gradient(135deg, var(--ai-a), var(--ai-c)); }
-  .pop h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
-  .pop-sub { margin: 4px 0 0; font-size: 13px; line-height: 1.45; color: var(--fg-soft); }
-  .close { width: 28px; height: 28px; margin: -4px -6px 0 0; display: grid; place-items: center; border: 0; background: transparent;
+
+  /* AI badge: gradient tile with a twinkling sparkle and a small clock for "not yet" */
+  .badge { position: relative; width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+    background: var(--ai-grad); color: #fff; box-shadow: var(--glow); flex: none; }
+  .badge .tw { transform-origin: 50% 50%; animation: twinkle 2.4s ease-in-out infinite; }
+  .badge .tw2 { animation-delay: 1.2s; }
+  .badge .clock { position: absolute; right: -5px; bottom: -5px; width: 20px; height: 20px; border-radius: 50%;
+    display: grid; place-items: center; background: var(--surface); color: var(--ai-b); box-shadow: 0 0 0 1px var(--line); }
+  @keyframes twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .45; transform: scale(.7); } }
+
+  .eyebrow { margin: 1px 0 3px; font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--fg-faint); }
+  .pop h3 { margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -.015em; line-height: 1.2;
+    background: var(--ai-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .pop-sub { margin: 12px 0 0; font-size: 13px; line-height: 1.45; color: var(--fg-soft); }
+  .close { width: 28px; height: 28px; margin: -6px -8px 0 0; display: grid; place-items: center; border: 0; background: transparent;
     color: var(--fg-faint); border-radius: 8px; cursor: pointer; }
   .close:hover { background: var(--line-soft); color: var(--fg); }
 
-  .caps { list-style: none; margin: 14px 0 0; padding: 12px 0 0; border-top: 1px solid var(--line-soft); display: grid; gap: 12px; }
-  .caps li { display: flex; gap: 12px; align-items: flex-start; }
-  .caps .ic { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: var(--accent-tint); color: var(--accent); flex: none; }
+  .caps { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .caps li { display: flex; flex-direction: column; gap: 8px; padding: 10px; border-radius: 12px; background: var(--surface);
+    border: 1px solid var(--line-soft); min-width: 0; }
+  .caps .ic { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; flex: none; }
+  .caps .pink .ic { background: var(--pink-bg); color: var(--pink-fg); }
+  .caps .violet .ic { background: var(--violet-bg); color: var(--violet-fg); }
+  .caps .indigo .ic { background: var(--indigo-bg); color: var(--indigo-fg); }
+  .caps .blue .ic { background: var(--blue-bg); color: var(--blue-fg); }
   .caps p { margin: 0; min-width: 0; }
-  .caps strong { display: block; font-size: 13.5px; font-weight: 500; }
-  .caps span { display: block; margin-top: 1px; font-size: 12.5px; line-height: 1.4; color: var(--fg-soft); }
+  .caps strong { display: block; font-size: 13px; font-weight: 600; line-height: 1.25; }
+  .caps span.d { display: block; margin-top: 3px; font-size: 12px; line-height: 1.4; color: var(--fg-soft); }
+
+  .pop-foot { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12px; color: var(--fg-faint); }
+  .pop-foot .dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--ai-b); flex: none; }
+  .pop-foot .dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--ai-b); animation: ping 1.8s ease-out infinite; }
+  @keyframes ping { 0% { transform: scale(1); opacity: .5; } 100% { transform: scale(2.6); opacity: 0; } }
+
+  @media (max-width: 380px) { .caps { grid-template-columns: 1fr; } }
 
   @media (max-width: 480px) {
     .top .icons svg:first-child { display: none; }
     .tab { width: 44px; }
     .nav { padding: 6px 10px; }
   }
-  @media (prefers-reduced-motion: reduce) { .pop, .pop.is-open { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .pop, .pop.is-open { transition: none; } .badge .tw, .pop-foot .dot::after { animation: none; } }
 </style>
 
 <header class="top">
@@ -195,33 +237,44 @@
     <!-- Coming-soon popover -->
     <section class="pop" id="ai-pop" role="dialog" aria-modal="false" aria-labelledby="ai-pop-title" aria-describedby="ai-pop-sub" tabindex="-1">
       <div class="pop-head">
+        <span class="badge" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 3.5l1.6 4.4 4.4 1.6-4.4 1.6L10 15.5l-1.6-4.4L4 9.5l4.4-1.6z"/>
+            <path class="tw" d="M17.5 13l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/>
+            <path class="tw tw2" d="M17 3l.5 1.5L19 5l-1.5.5L17 7l-.5-1.5L15 5l1.5-.5z"/>
+          </svg>
+          <span class="clock">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </span>
+        </span>
         <div>
-          <p class="eyebrow"><i></i>Gibble AI</p>
+          <p class="eyebrow">Gibble AI</p>
           <h3 id="ai-pop-title">Coming soon</h3>
-          <p class="pop-sub" id="ai-pop-sub">Smart help for planning lessons and tracking every student. Here’s what’s on the way.</p>
         </div>
         <button class="close" id="ai-pop-close" type="button" aria-label="Close">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
+      <p class="pop-sub" id="ai-pop-sub">Your AI teaching assistant is on its way. Here’s what it will do for you.</p>
       <ul class="caps">
-        <li>
-          <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg></span>
-          <p><strong>Topic recommendations</strong><span>What to teach next, based on each student’s progress.</span></p>
+        <li class="pink">
+          <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg></span>
+          <p><strong>Topic recommendations</strong><span class="d">What to teach next for each student.</span></p>
         </li>
-        <li>
-          <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17a8.5 8.5 0 1 1 17 0"/><path d="m12 17 4-5"/><circle cx="12" cy="17" r="1"/></svg></span>
-          <p><strong>Readiness score</strong><span>How prepared a student is for the next grade or exam.</span></p>
+        <li class="violet">
+          <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17a8.5 8.5 0 1 1 17 0"/><path d="m12 17 4-5"/><circle cx="12" cy="17" r="1"/></svg></span>
+          <p><strong>Readiness score</strong><span class="d">How prepared a student is for the next level.</span></p>
         </li>
-        <li>
-          <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></span>
-          <p><strong>Task history</strong><span>Every task assigned, submitted and rated, in one timeline.</span></p>
+        <li class="indigo">
+          <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></span>
+          <p><strong>Task history</strong><span class="d">Every task assigned and rated, in one timeline.</span></p>
         </li>
-        <li>
-          <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span>
-          <p><strong>Students overview</strong><span>Strengths and gaps across all your students at a glance.</span></p>
+        <li class="blue">
+          <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span>
+          <p><strong>Students overview</strong><span class="d">Strengths and gaps across your class.</span></p>
         </li>
       </ul>
+      <p class="pop-foot"><span class="dot" aria-hidden="true"></span>In the works. We’ll notify you at launch.</p>
     </section>
   </nav>
 </div>
