@@ -141,14 +141,22 @@ const snippets: Record<string, React.ReactNode> = {
       <span className="ml-3 text-sm font-bold">32 students</span>
     </div>
   ),
+  "ai-assistant": (
+    <div className="flex flex-col gap-2 text-sm">
+      <p className="max-w-[85%] self-end rounded-2xl rounded-br-md bg-sky px-3.5 py-2 font-semibold">🎙️ How is Kevin doing in reading?</p>
+      <p className="max-w-[85%] self-start rounded-2xl rounded-bl-md bg-cream px-3.5 py-2">
+        Kevin is at <b>4/5</b> in reading, up from 3.5 last month. His next class is Monday at 4 pm.
+      </p>
+    </div>
+  ),
 };
 
 function FeatureBento() {
-  const spans = ["md:col-span-3", "md:col-span-3", "md:col-span-2", "md:col-span-2", "md:col-span-2"];
+  const spans = ["md:col-span-3", "md:col-span-3", "md:col-span-2", "md:col-span-2", "md:col-span-2", "md:col-span-6"];
   return (
     <section className="px-4 py-20 sm:px-6">
       <SectionHeading eyebrow="Product features" title="Why teachers love Gibble">
-        Five simple tools that take the busywork out of teaching, so you can spend more time with your students.
+        Six simple tools that take the busywork out of teaching, so you can spend more time with your students.
       </SectionHeading>
       <div className="mx-auto mt-12 grid max-w-6xl gap-4 md:grid-cols-6">
         {features.map((f, i) => (

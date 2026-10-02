@@ -59,4 +59,12 @@ export const features = [
     ink: "text-peach-ink",
     emoji: "🧑‍🎓",
   },
+  {
+    id: "ai-assistant",
+    title: "Your AI Teaching Assistant",
+    short: "Ask about your students, their progress, assignments and classes using voice or text. Less time searching, more time teaching.",
+    color: "bg-sky",
+    ink: "text-sky-ink",
+    emoji: "✨",
+  },
 ] as const;

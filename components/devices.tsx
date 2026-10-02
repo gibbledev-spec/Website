@@ -334,3 +334,38 @@ export function StudentsScreen() {
     </>
   );
 }
+
+export function AssistantScreen() {
+  const chat: [string, "me" | "ai"][] = [
+    ["How is Kevin doing in reading?", "me"],
+    ["Kevin is at 4/5 in reading, up from 3.5 last month.", "ai"],
+    ["Which of his tasks are pending?", "me"],
+    ["Two: C major scale and Sight-reading ex. 4.", "ai"],
+  ];
+  return (
+    <>
+      <AppBar sub="Gibble AI" title="Ask anything" />
+      <div className="flex flex-col gap-2 px-4">
+        {chat.map(([t, who]) => (
+          <p
+            key={t}
+            className={`max-w-[85%] rounded-2xl px-3 py-2 text-[11px] leading-snug ${
+              who === "me" ? "self-end rounded-br-md bg-sky font-semibold" : "self-start rounded-bl-md bg-cream"
+            }`}
+          >
+            {t}
+          </p>
+        ))}
+      </div>
+      <div className="mt-auto flex items-center gap-2 p-4">
+        <div className="flex flex-1 items-center gap-1 rounded-full bg-cream px-3 py-2.5">
+          {[6, 12, 8, 14, 10, 6, 12, 8].map((h, i) => (
+            <span key={i} className="w-1 rounded-full bg-sky-ink/60" style={{ height: h }} />
+          ))}
+          <span className="ml-1.5 text-[10px] font-semibold text-ink-soft">Listening…</span>
+        </div>
+        <span className="grid h-9 w-9 place-items-center rounded-full bg-brand text-sm text-white">🎙️</span>
+      </div>
+    </>
+  );
+}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import {
+  AssistantScreen,
   LibraryScreen,
   PhoneFrame,
   ProgressScreen,
@@ -76,13 +77,24 @@ const detail: Record<string, { headline: string; body: string; points: string[];
     ],
     screen: <StudentsScreen />,
   },
+  "ai-assistant": {
+    headline: "Less time searching, more time teaching",
+    body: "Gibble brings assistive intelligence into your workflow. Ask about students, their learning journey, progress, assignments or classes using voice or text, without moving through multiple screens.",
+    points: [
+      "Talk or type to Gibble's AI",
+      "Ask about students and progress",
+      "Check assignments and classes fast",
+      "Hands-free voice while you teach",
+    ],
+    screen: <AssistantScreen />,
+  },
 };
 
 export default function FeaturesPage() {
   return (
     <>
       <PageHero eyebrow="Features" title="Everything a teacher needs, in one joyful app">
-        Five tools that work together, from the moment you set a task to the moment you see a student improve.
+        Six tools that work together, from the moment you set a task to the moment you see a student improve.
       </PageHero>
 
       <nav aria-label="Features" className="sticky top-[72px] z-40 bg-cream/90 px-4 py-3 backdrop-blur sm:px-6">
