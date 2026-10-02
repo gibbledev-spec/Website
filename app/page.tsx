@@ -29,9 +29,6 @@ function Hero() {
     <section className="relative px-4 pb-16 pt-10 sm:px-6 md:pt-16">
       <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-[1.05fr_1fr]">
         <div>
-          <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-sm font-semibold ring-1 ring-line">
-            <span className="h-2 w-2 rounded-full bg-mint-ink" /> Made for teachers
-          </p>
           <h1 className="text-5xl font-black leading-[1.02] sm:text-6xl lg:text-7xl">
             Teach smarter,{" "}
             <span className="relative inline-block">
@@ -233,7 +230,7 @@ function HowItWorks() {
 
 export default function Home() {
   return (
-    <>
+    <div className="bg-white">
       <Hero />
       <SubjectRow />
       <FeatureBento />
@@ -242,7 +239,7 @@ export default function Home() {
       <Testimonials />
       <PraiseMarquee />
       <DownloadCta />
-    </>
+    </div>
   );
 }
 

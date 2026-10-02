@@ -9,10 +9,11 @@ import { Button, Logo } from "./ui";
 export function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const surface = pathname === "/" ? "bg-white" : "bg-cream";
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line/60 bg-cream/85 backdrop-blur">
+    <header className={`sticky top-0 z-50 border-b border-line/60 backdrop-blur ${pathname === "/" ? "bg-white/85" : "bg-cream/85"}`}>
       <div className="mx-auto flex h-18 max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         <Logo />
 
@@ -50,14 +51,14 @@ export function Header() {
       </div>
 
       {open && (
-        <nav id="mobile-nav" className="border-t border-line bg-cream px-4 pb-6 pt-3 md:hidden" aria-label="Mobile">
+        <nav id="mobile-nav" className={`border-t border-line px-4 pb-6 pt-3 md:hidden ${surface}`} aria-label="Mobile">
           <ul className="space-y-1">
             {nav.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className={`block rounded-2xl px-4 py-3 font-display text-xl font-bold ${isActive(item.href) ? "bg-white" : ""}`}
+                  className={`block rounded-2xl px-4 py-3 font-display text-xl font-bold ${isActive(item.href) ? (pathname === "/" ? "bg-cream" : "bg-white") : ""}`}
                 >
                   {item.label}
                 </Link>
