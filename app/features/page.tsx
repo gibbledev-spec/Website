@@ -1,16 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import {
-  AssistantScreen,
-  LibraryScreen,
-  PhoneFrame,
-  ProgressScreen,
-  RatingScreen,
-  StudentsScreen,
-  TaskScreen,
-  TabletFrame,
-  screens,
-} from "@/components/devices";
+import { PhoneFrame, TabletFrame, screens } from "@/components/devices";
 import { PageHero } from "@/components/PageHero";
 import { DeviceBanner, DownloadCta, FeatureRow } from "@/components/sections";
 import { features } from "@/lib/site";
@@ -20,7 +10,7 @@ export const metadata: Metadata = {
   description: "Task creation, task rating, progress tracking, a resource library and class management, in one app for teachers.",
 };
 
-const detail: Record<string, { headline: string; body: string; points: string[]; screen: ReactNode; visual?: ReactNode }> = {
+const detail: Record<string, { headline: string; body: string; points: string[]; visual: ReactNode }> = {
   "task-creation": {
     headline: "Turn every lesson into actionable practice",
     body: "Create tasks and assignments for your students and track their completion. Students work through their assigned activities, while you see what's done and what still needs attention.",
@@ -30,7 +20,7 @@ const detail: Record<string, { headline: string; body: string; points: string[];
       "See what's done and what's pending",
       "Rate each assignment with feedback",
     ],
-    screen: <TaskScreen />,
+    visual: <PhoneFrame screenshot={screens.phoneTaskCreation} />,
   },
   "task-rating": {
     headline: "Rate every task on what matters",
@@ -41,7 +31,7 @@ const detail: Record<string, { headline: string; body: string; points: string[];
       "Average becomes the task rating",
       "Ratings feed the progress tracker",
     ],
-    screen: <RatingScreen />,
+    visual: <PhoneFrame screenshot={screens.phoneTaskRating} />,
   },
   "progress-tracker": {
     headline: "Track every student's learning journey",
@@ -52,7 +42,6 @@ const detail: Record<string, { headline: string; body: string; points: string[];
       "Teach theory alongside practical lessons",
       "Build technique and understanding",
     ],
-    screen: <ProgressScreen />,
     visual: <TabletFrame screenshot={screens.tabletProgress} />,
   },
   library: {
@@ -64,7 +53,7 @@ const detail: Record<string, { headline: string; body: string; points: string[];
       "Arrange resources by learning level",
       "Share materials with students easily",
     ],
-    screen: <LibraryScreen />,
+    visual: <PhoneFrame screenshot={screens.phoneMusicLibrary} />,
   },
   "class-management": {
     headline: "Keep all your students organised in one place",
@@ -75,7 +64,7 @@ const detail: Record<string, { headline: string; body: string; points: string[];
       "Track progress, tasks and activities",
       "Replace notes, spreadsheets and apps",
     ],
-    screen: <StudentsScreen />,
+    visual: <PhoneFrame screenshot={screens.phoneMyStudents} />,
   },
   "ai-assistant": {
     headline: "Less time searching, more time teaching",
@@ -86,7 +75,7 @@ const detail: Record<string, { headline: string; body: string; points: string[];
       "Check assignments and classes fast",
       "Hands-free voice while you teach",
     ],
-    screen: <AssistantScreen />,
+    visual: <PhoneFrame screenshot={screens.phoneAiAssistant} />,
   },
 };
 
@@ -127,7 +116,7 @@ export default function FeaturesPage() {
                     {d.headline}
                   </>
                 }
-                visual={d.visual ?? <PhoneFrame>{d.screen}</PhoneFrame>}
+                visual={d.visual}
               >
                 <p>{d.body}</p>
                 <ul className="space-y-2 pt-2 text-base text-ink">

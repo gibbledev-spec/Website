@@ -44,6 +44,11 @@ export function TabletFrame({ children, className = "", screenshot }: FrameProps
 export const screens = {
   tabletProgress: { src: "/screens/tablet-progress.webp", alt: "Gibble on a tablet: a student's progress tracker with star ratings for technique, reading and posture" },
   phonePractical: { src: "/screens/phone-practical.webp", alt: "Gibble on a phone: starting a student's practical lessons with pieces, finger exercises, scales and sight reading" },
+  phoneTaskCreation: { src: "/screens/phone-task-creation.webp", alt: "Gibble on a phone: a piece's to-do list of practice tasks with topic progress for technicals, posture and reading" },
+  phoneTaskRating: { src: "/screens/phone-task-rating.webp", alt: "Gibble on a phone: rating a task on technical understanding, reading ability and body posture" },
+  phoneMusicLibrary: { src: "/screens/phone-music-library.webp", alt: "Gibble on a phone: a piece in the music library with its music sheet, audio clips and referral video" },
+  phoneMyStudents: { src: "/screens/phone-my-students.webp", alt: "Gibble on a phone: the My Students list with each student's instrument, level, grade and rating" },
+  phoneAiAssistant: { src: "/screens/phone-ai-assistant.webp", alt: "Gibble AI on a phone: suggestions to summarise a class, add tasks and get a student's progress" },
 };
 
 function AppBar({ title, sub }: { title: string; sub?: string }) {
