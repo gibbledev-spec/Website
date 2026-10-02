@@ -1,8 +1,6 @@
 import Link from "next/link";
 import {
-  OnboardScreen,
   PhoneFrame,
-  StudentsScreen,
   TabletFrame,
   screens,
 } from "@/components/devices";
@@ -188,8 +186,7 @@ function TeacherCan() {
         <FeatureRow
           bg="bg-mint"
           title="Onboard students and create their profiles"
-          visual={<PhoneFrame><OnboardScreen /></PhoneFrame>}
-          cta={<Button href="/features/#class-management" variant="dark">Explore student profiles</Button>}
+          visual={<PhoneFrame screenshot={screens.phoneAddStudent} />}
         >
           <p>Add a new student in a minute. Save their age, level, instrument and lesson time in one profile you can open whenever you need it.</p>
         </FeatureRow>
@@ -198,15 +195,13 @@ function TeacherCan() {
           bg="bg-butter"
           title="Track every student's learning journey"
           visual={<TabletFrame screenshot={screens.tabletProgress} />}
-          cta={<Button href="/features/#progress-tracker" variant="dark">Explore progress tracking</Button>}
         >
           <p>Follow each student&apos;s progress in technique, reading and posture, lesson by lesson, so you always know what to work on next.</p>
         </FeatureRow>
         <FeatureRow
           bg="bg-lilac"
           title="Manage all your students and their classes"
-          visual={<PhoneFrame><StudentsScreen /></PhoneFrame>}
-          cta={<Button href="/features/#class-management" variant="dark">Explore student management</Button>}
+          visual={<PhoneFrame screenshot={screens.phoneSchedule} />}
         >
           <p>See every student and their upcoming classes in one place, and find anyone&apos;s profile, lessons and progress in a tap.</p>
         </FeatureRow>
