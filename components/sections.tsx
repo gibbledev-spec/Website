@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { PhoneFrame, TabletDashboard, TabletFrame, ClassScreen } from "./devices";
+import { PhoneFrame, TabletFrame, screens } from "./devices";
 import { Avatar, SectionHeading, Sparkle, Squiggle, StoreBadges } from "./ui";
 
 /* Zig-zag row: visual on one side, copy on the other */
@@ -58,12 +58,8 @@ export function DeviceBanner() {
           <StoreBadges className="mt-6" light />
         </div>
         <div className="relative hidden h-[330px] md:block">
-          <TabletFrame className="absolute right-0 top-0 !w-[360px] rotate-2">
-            <TabletDashboard />
-          </TabletFrame>
-          <PhoneFrame className="absolute left-0 top-10 origin-top-left scale-[0.62] -rotate-3">
-            <ClassScreen />
-          </PhoneFrame>
+          <TabletFrame screenshot={screens.tabletProgress} className="absolute right-0 top-0 !w-[360px] rotate-2" />
+          <PhoneFrame screenshot={screens.phonePractical} className="absolute left-0 top-10 origin-top-left scale-[0.62] -rotate-3" />
         </div>
       </div>
     </div>

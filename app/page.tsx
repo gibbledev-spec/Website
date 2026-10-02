@@ -3,8 +3,8 @@ import {
   PhoneFrame,
   ProgressScreen,
   RatingScreen,
-  TabletDashboard,
   TabletFrame,
+  screens,
   TaskScreen,
 } from "@/components/devices";
 import { DeviceBanner, DownloadCta, FeatureRow, PraiseMarquee } from "@/components/sections";
@@ -51,12 +51,8 @@ function Hero() {
         <div className="relative mx-auto h-[520px] w-full max-w-[520px]">
           <div className="absolute right-0 top-6 h-[360px] w-[85%] rotate-3 rounded-[2.5rem] bg-butter" />
           <div className="absolute bottom-0 left-2 h-48 w-48 rounded-full bg-lilac" />
-          <TabletFrame className="absolute right-2 top-12 !w-[370px] max-sm:hidden">
-            <TabletDashboard />
-          </TabletFrame>
-          <PhoneFrame className="absolute bottom-0 left-0 origin-bottom-left scale-[0.8] -rotate-3 max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:origin-bottom max-sm:rotate-0">
-            <RatingScreen />
-          </PhoneFrame>
+          <TabletFrame screenshot={screens.tabletProgress} className="absolute right-2 top-12 !w-[370px] max-sm:hidden" />
+          <PhoneFrame className="absolute bottom-0 left-0 origin-bottom-left scale-[0.8] -rotate-3 max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:origin-bottom max-sm:rotate-0" screenshot={screens.phonePractical} />
 
           {/* Stickers */}
           <span className="absolute left-[38%] top-2 animate-float rounded-full bg-brand px-4 py-2 text-sm font-bold text-white shadow-lg -rotate-6">
