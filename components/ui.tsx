@@ -4,13 +4,9 @@ import { site } from "@/lib/site";
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
-    <Link href="/" className={`inline-flex items-center gap-2 ${className}`} aria-label="Gibble home">
-      <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand text-white shadow-[0_3px_0_0_var(--color-brand-dark)]">
-        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" aria-hidden>
-          <path d="M17 8.5A6 6 0 1 0 18 13h-5" />
-        </svg>
-      </span>
-      <span className="font-display text-2xl font-black tracking-tight">Gibble</span>
+    <Link href="/" className={`inline-flex items-center ${className}`} aria-label="Gibble home">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/gibble-logo.png" alt="Gibble" width={616} height={227} className="h-11 w-auto" />
     </Link>
   );
 }

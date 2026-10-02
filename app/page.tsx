@@ -230,16 +230,18 @@ function HowItWorks() {
 
 export default function Home() {
   return (
-    <div className="bg-white">
-      <Hero />
-      <SubjectRow />
+    <>
+      <div className="bg-white">
+        <Hero />
+        <SubjectRow />
+      </div>
       <FeatureBento />
       <TeacherCan />
       <HowItWorks />
       <Testimonials />
       <PraiseMarquee />
       <DownloadCta />
-    </div>
+    </>
   );
 }
 
