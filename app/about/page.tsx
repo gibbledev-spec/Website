@@ -3,7 +3,7 @@ import { ContactForm } from "@/components/ContactForm";
 import { PageHero } from "@/components/PageHero";
 import { DownloadCta } from "@/components/sections";
 import { SectionHeading, Sparkle } from "@/components/ui";
-import { site } from "@/lib/site";
+import { site, telHref } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About us",
@@ -82,9 +82,11 @@ export default function AboutPage() {
               <li>
                 ✉️ <a href={`mailto:${site.email}`} className="hover:text-brand">{site.email}</a>
               </li>
-              <li>
-                📞 <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hover:text-brand">{site.phone}</a>
-              </li>
+              {site.phones.map((phone) => (
+                <li key={phone}>
+                  📞 <a href={telHref(phone)} className="hover:text-brand">{phone}</a>
+                </li>
+              ))}
             </ul>
           </div>
           <ContactForm />

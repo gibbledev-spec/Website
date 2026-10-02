@@ -29,7 +29,7 @@ Shared pieces live in `components/`. Colours and fonts are design tokens in `app
 
 Search the code for `TODO`. Main items:
 
-- `lib/site.ts`: store links, email, phone, social links
+- `lib/site.ts`: App Store and Google Play links, Facebook page
 - `public/screens/`: app screenshots shown in the phone and tablet frames (`components/devices.tsx`)
 - `components/ui.tsx`: store badges are drafts; use the official Apple / Google artwork
 - `app/pricing/page.tsx`: plan prices and limits

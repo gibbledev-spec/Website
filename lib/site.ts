@@ -1,15 +1,16 @@
 // Central place for links and contact details.
-// TODO: replace placeholders with real values before launch.
 export const site = {
   name: "Gibble",
   tagline: "The joyful classroom app for teachers.",
   appStoreUrl: "#", // TODO: App Store link
   playStoreUrl: "#", // TODO: Google Play link
-  email: "hello@gibble.app", // TODO: confirm
-  phone: "+91 00000 00000", // TODO: confirm
-  instagram: "#", // TODO: Instagram profile
-  facebook: "#", // TODO: Facebook page
+  email: "Gibblelearning@gmail.com",
+  phones: ["+91 80074 58523", "+91 70201 35589"],
+  instagram: "https://www.instagram.com/gibble_learning/",
+  facebook: "", // TODO: Facebook page; the icon is hidden while this is empty
 };
+
+export const telHref = (phone: string) => `tel:${phone.replace(/\s/g, "")}`;
 
 export const nav = [
   { href: "/", label: "Home" },

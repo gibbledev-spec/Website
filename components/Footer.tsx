@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { site } from "@/lib/site";
+import { site, telHref } from "@/lib/site";
 import { Logo, StoreBadges } from "./ui";
 
 function InstagramIcon() {
@@ -76,17 +76,21 @@ export function Footer() {
             <li>
               <a href={`mailto:${site.email}`} className="hover:text-brand">{site.email}</a>
             </li>
-            <li>
-              <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hover:text-brand">{site.phone}</a>
-            </li>
+            {site.phones.map((phone) => (
+              <li key={phone}>
+                <a href={telHref(phone)} className="hover:text-brand">{phone}</a>
+              </li>
+            ))}
           </ul>
           <div className="mt-4 flex gap-2">
-            <a href={site.instagram} aria-label="Gibble on Instagram" className="grid h-10 w-10 place-items-center rounded-full bg-white ring-1 ring-line hover:bg-brand hover:text-white">
+            <a href={site.instagram} target="_blank" rel="noopener noreferrer" aria-label="Gibble on Instagram" className="grid h-10 w-10 place-items-center rounded-full bg-white ring-1 ring-line hover:bg-brand hover:text-white">
               <InstagramIcon />
             </a>
-            <a href={site.facebook} aria-label="Gibble on Facebook" className="grid h-10 w-10 place-items-center rounded-full bg-white ring-1 ring-line hover:bg-brand hover:text-white">
-              <FacebookIcon />
-            </a>
+            {site.facebook && (
+              <a href={site.facebook} aria-label="Gibble on Facebook" className="grid h-10 w-10 place-items-center rounded-full bg-white ring-1 ring-line hover:bg-brand hover:text-white">
+                <FacebookIcon />
+              </a>
+            )}
           </div>
         </div>
       </div>
