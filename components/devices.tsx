@@ -161,23 +161,33 @@ export function ProgressScreen() {
 
 export function LibraryScreen() {
   const items = [
-    ["📄", "Worksheet · Fractions", "bg-butter"],
-    ["🧪", "Lab notes · Plants", "bg-mint"],
-    ["📖", "Reading · Chapter 4", "bg-lilac"],
-    ["🗺️", "Map activity", "bg-peach"],
+    ["🎼", "Music sheet", "Für Elise", "bg-butter"],
+    ["🎧", "Audio", "Scale drills", "bg-mint"],
+    ["🎬", "Video", "Posture tips", "bg-lilac"],
+    ["📄", "Material", "Note values", "bg-peach"],
   ];
   return (
     <>
-      <AppBar sub="Library" title="My resources" />
+      <AppBar sub="Music library" title="My resources" />
       <div className="px-4">
-        <div className="mb-2.5 rounded-full bg-cream px-3 py-2 text-[11px] text-ink-soft">🔍 Search worksheets, tasks…</div>
+        <div className="mb-2.5 rounded-full bg-cream px-3 py-2 text-[11px] text-ink-soft">🔍 Search library</div>
+        <div className="mb-2.5 flex gap-1.5">
+          {["Basic", "Grade 1", "Grade 2"].map((t, i) => (
+            <span key={t} className={`whitespace-nowrap rounded-full px-2.5 py-1 text-[10px] font-bold ${i === 0 ? "bg-ink text-white" : "bg-cream"}`}>{t}</span>
+          ))}
+        </div>
         <div className="grid grid-cols-2 gap-2">
-          {items.map(([e, t, c]) => (
-            <div key={t} className={`rounded-xl p-3 ${c}`}>
-              <p className="text-lg">{e}</p>
-              <p className="mt-1 text-[10px] font-bold leading-tight">{t}</p>
+          {items.map(([e, kind, name, c]) => (
+            <div key={name} className={`rounded-xl p-2.5 ${c}`}>
+              <p className="text-base">{e}</p>
+              <p className="mt-0.5 truncate text-[10px] font-bold leading-tight">{name}</p>
+              <p className="text-[9px] text-ink-soft">{kind}</p>
             </div>
           ))}
+        </div>
+        <div className="mt-2.5 flex items-center justify-between rounded-xl bg-cream p-2.5">
+          <span className="text-[10px] font-semibold">Share with Kevin</span>
+          <span className="rounded-full bg-brand px-2.5 py-1 text-[10px] font-bold text-white">Share</span>
         </div>
       </div>
     </>
