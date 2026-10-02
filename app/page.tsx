@@ -29,12 +29,11 @@ function Hero() {
       <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-[1.05fr_1fr]">
         <div>
           <h1 className="text-5xl font-black leading-[1.02] sm:text-6xl lg:text-7xl">
-            Teach smarter,{" "}
+            Immerse in the experience of{" "}
             <span className="relative inline-block">
-              the joyful
+              learning.
               <Underline className="absolute -bottom-2 left-0 h-3 w-full text-brand" />
-            </span>{" "}
-            way.
+            </span>
           </h1>
           <p className="mt-6 max-w-lg text-lg text-ink-soft">
             Create tasks in minutes, rate student work with feedback that helps, and watch every learner grow. All from one app on your phone or tablet.
