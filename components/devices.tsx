@@ -91,24 +91,39 @@ export function TaskScreen() {
 }
 
 export function RatingScreen() {
+  const scores: [string, number][] = [
+    ["Technique", 5],
+    ["Body posture", 4],
+    ["Reading", 4],
+  ];
+  const avg = scores.reduce((t, [, v]) => t + v, 0) / scores.length;
   return (
     <>
-      <AppBar sub="Review" title="Aarav's submission" />
-      <div className="space-y-2.5 px-4">
-        <div className="h-28 rounded-xl bg-[repeating-linear-gradient(0deg,#f4ecdc_0_1px,transparent_1px_14px)] bg-cream p-3">
-          <p className="font-display text-xs italic text-ink-soft">“¾ of the circle is shaded because…”</p>
-        </div>
-        <div className="rounded-xl bg-mint p-3">
-          <p className="text-[10px] font-semibold text-mint-ink">Your rating</p>
-          <p className="mt-1 text-lg tracking-wider text-[#f59e0b]">★★★★<span className="text-ink/20">★</span></p>
+      <AppBar sub="Rate task · Kevin Shah" title="Für Elise practice" />
+      <div className="space-y-2 px-4">
+        {scores.map(([label, v]) => (
+          <div key={label} className="flex items-center justify-between rounded-xl bg-cream px-3 py-2.5">
+            <span className="text-[11px] font-semibold">{label}</span>
+            <span className="text-sm tracking-wider text-[#f59e0b]">
+              {"★".repeat(v)}
+              <span className="text-ink/20">{"★".repeat(5 - v)}</span>
+            </span>
+          </div>
+        ))}
+        <div className="flex items-center justify-between rounded-xl bg-mint p-3">
+          <div>
+            <p className="text-[10px] font-semibold text-mint-ink">Task rating</p>
+            <p className="text-[9px] text-ink-soft">Average of all three</p>
+          </div>
+          <p className="font-display text-xl font-black">{avg.toFixed(1)}<span className="text-xs text-ink-soft">/5</span></p>
         </div>
         <div className="rounded-xl bg-cream p-3">
           <p className="text-[10px] font-semibold text-ink-soft">Feedback</p>
-          <p className="mt-1 text-[11px] font-medium">Great reasoning! Check Q3 units again 👍</p>
+          <p className="mt-1 text-[11px] font-medium">Lovely dynamics! Keep your wrists level.</p>
         </div>
       </div>
       <div className="mt-auto p-4">
-        <div className="rounded-full bg-ink py-2.5 text-center text-xs font-bold text-white">Send feedback</div>
+        <div className="rounded-full bg-ink py-2.5 text-center text-xs font-bold text-white">Save rating</div>
       </div>
     </>
   );
