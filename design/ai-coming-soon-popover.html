@@ -1,0 +1,266 @@
+<title>Gibble AI Popover</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+  /* Layout: the teacher dashboard as-is; the popover anchors above the AI tab in the bottom nav. */
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --fg: #1f2329;
+    --fg-soft: #5d6470;
+    --fg-faint: #8a909b;
+    --line: #e6e8ec;
+    --line-soft: #f0f1f4;
+    --accent: #2f5ee8;
+    --accent-tint: #f1f4fe;
+    --ai-a: #e2457f;
+    --ai-b: #7b3fe4;
+    --ai-c: #3b5cf0;
+    --nav-ring: #f2c9d8;
+    --shadow: 0 1px 2px rgba(20, 24, 33, .04), 0 12px 32px -8px rgba(20, 24, 33, .14);
+    --scrim: rgba(20, 24, 33, 0);
+    --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121418; --surface: #1b1e24; --fg: #eceef2; --fg-soft: #a6acb8; --fg-faint: #7c828e;
+      --line: #2c3038; --line-soft: #23262d; --accent: #7d9bff; --accent-tint: #222a40;
+      --nav-ring: #4a2c3a; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 40px -8px rgba(0,0,0,.6);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #121418; --surface: #1b1e24; --fg: #eceef2; --fg-soft: #a6acb8; --fg-faint: #7c828e;
+    --line: #2c3038; --line-soft: #23262d; --accent: #7d9bff; --accent-tint: #222a40;
+    --nav-ring: #4a2c3a; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 16px 40px -8px rgba(0,0,0,.6);
+    color-scheme: dark;
+  }
+
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 15px; }
+  * { box-sizing: border-box; }
+  svg { display: block; flex: none; }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+
+  /* ---------- Dashboard (context) ---------- */
+  .top {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px max(16px, 2.5vw); border-bottom: 1px solid var(--line);
+  }
+  .logo { font-weight: 600; font-size: 22px; letter-spacing: -.02em; padding-right: 16px; border-right: 1px solid var(--line);
+    background: linear-gradient(90deg, #f5a524, #e2457f 45%, #3b5cf0); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .top h1 { font-size: 18px; font-weight: 500; margin: 0; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .top .icons { display: flex; align-items: center; gap: 18px; color: var(--fg); }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #6b4a3a, #2a1d17); }
+
+  main { padding: 24px max(16px, 2.5vw) 140px; }
+  .head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .head h2 { margin: 0; font-size: 22px; font-weight: 500; }
+  .btn-outline { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border: 1px solid var(--accent);
+    color: var(--accent); background: transparent; border-radius: 6px; font-weight: 500; font-size: 14px; cursor: pointer; }
+  .card { margin-top: 28px; max-width: 420px; border: 1px solid var(--line); border-radius: 6px; padding: 16px; background: var(--surface); }
+  .card-row { display: flex; gap: 16px; }
+  .photo { width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(160deg, #dde3ea, #b8c3cf); flex: none; }
+  .card-row > div { flex: 1; min-width: 0; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  .name { font-weight: 500; font-size: 17px; margin: 0 0 6px; }
+  .chip { display: inline-block; padding: 2px 10px; border: 1px solid var(--line); border-radius: 999px; font-size: 12px; color: var(--fg-soft); }
+  .stars { display: flex; align-items: center; gap: 4px; margin-top: 8px; color: var(--fg-faint); font-size: 13px; }
+  .subject { margin: 14px 0 8px; font-weight: 500; font-size: 16px; }
+  .slots { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--fg-soft); }
+  .slots span { display: inline-flex; align-items: center; gap: 6px; }
+  .slots b { font-weight: 500; color: var(--fg); }
+  .slots svg { color: var(--accent); }
+  .hint { margin-top: 32px; font-size: 13px; color: var(--fg-faint); }
+
+  /* ---------- Bottom nav ---------- */
+  .nav-wrap { position: fixed; left: 0; right: 0; bottom: 0; display: flex; justify-content: center;
+    padding: 0 16px calc(20px + env(safe-area-inset-bottom, 0px)); pointer-events: none; }
+  .nav { position: relative; pointer-events: auto; display: flex; gap: 6px; padding: 8px 18px; background: var(--surface);
+    border: 1px solid var(--nav-ring); border-radius: 16px; box-shadow: 0 4px 20px -10px rgba(20,24,33,.18); }
+  .tab { width: 52px; height: 48px; display: grid; place-items: center; border: 0; background: transparent;
+    color: var(--fg-soft); border-radius: 12px; cursor: pointer; transition: background .15s; }
+  .tab.is-current { color: var(--accent); }
+  .tab:hover { background: var(--line-soft); }
+  .tab-ai[aria-expanded="true"] { background: var(--line-soft); }
+
+  /* ---------- Coming-soon popover ---------- */
+  .pop {
+    position: absolute; left: 50%; bottom: calc(100% + 12px);
+    width: min(340px, calc(100vw - 32px));
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow); padding: 18px 18px 16px; text-align: left;
+    transform: translate(-50%, 4px); opacity: 0; visibility: hidden;
+    transition: opacity .16s ease, transform .16s ease, visibility 0s linear .16s;
+  }
+  .pop.is-open { opacity: 1; visibility: visible; transform: translate(-50%, 0); transition: opacity .16s ease, transform .16s ease; }
+  .pop::after { /* caret pointing at the AI tab */
+    content: ""; position: absolute; left: var(--caret-x, 50%); bottom: -6px; width: 10px; height: 10px;
+    background: var(--surface); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    transform: translateX(-50%) rotate(45deg);
+  }
+  .pop-head { display: flex; align-items: flex-start; gap: 10px; }
+  .pop-head > div { flex: 1; min-width: 0; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 6px; font-size: 11px; font-weight: 600;
+    letter-spacing: .06em; text-transform: uppercase; color: var(--fg-faint); }
+  .eyebrow i { width: 6px; height: 6px; border-radius: 50%; background: linear-gradient(135deg, var(--ai-a), var(--ai-c)); }
+  .pop h3 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
+  .pop-sub { margin: 4px 0 0; font-size: 13px; line-height: 1.45; color: var(--fg-soft); }
+  .close { width: 28px; height: 28px; margin: -4px -6px 0 0; display: grid; place-items: center; border: 0; background: transparent;
+    color: var(--fg-faint); border-radius: 8px; cursor: pointer; }
+  .close:hover { background: var(--line-soft); color: var(--fg); }
+
+  .caps { list-style: none; margin: 14px 0 0; padding: 12px 0 0; border-top: 1px solid var(--line-soft); display: grid; gap: 12px; }
+  .caps li { display: flex; gap: 12px; align-items: flex-start; }
+  .caps .ic { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: var(--accent-tint); color: var(--accent); flex: none; }
+  .caps p { margin: 0; min-width: 0; }
+  .caps strong { display: block; font-size: 13.5px; font-weight: 500; }
+  .caps span { display: block; margin-top: 1px; font-size: 12.5px; line-height: 1.4; color: var(--fg-soft); }
+
+  @media (max-width: 480px) {
+    .top .icons svg:first-child { display: none; }
+    .tab { width: 44px; }
+    .nav { padding: 6px 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .pop, .pop.is-open { transition: none; } }
+</style>
+
+<header class="top">
+  <span class="logo">Gibble</span>
+  <h1>Yash’s Dashboard</h1>
+  <div class="icons">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+    <span class="avatar" aria-hidden="true"></span>
+  </div>
+</header>
+
+<main>
+  <div class="head">
+    <h2>My Students (01)</h2>
+    <button class="btn-outline" type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Add New Student
+    </button>
+  </div>
+
+  <article class="card">
+    <div class="card-row">
+      <span class="photo" aria-hidden="true"></span>
+      <div>
+        <p class="name">Kevin Shah</p>
+        <span class="chip">Advance</span>
+        <div class="stars" aria-label="No rating yet">
+          <svg width="88" height="16" viewBox="0 0 88 16" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round">
+            <path id="st" d="M8 1.5l1.9 4 4.4.5-3.3 3 .9 4.3L8 11.1l-3.9 2.2.9-4.3-3.3-3 4.4-.5z"/>
+            <use href="#st" x="18"/><use href="#st" x="36"/><use href="#st" x="54"/><use href="#st" x="72"/>
+          </svg>
+          N/A
+        </div>
+      </div>
+    </div>
+    <p class="subject">Piano | Theory of Music</p>
+    <div class="slots">
+      <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><b>Wednesday</b> 7am - 8am IST</span>
+      <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg><b>Friday</b> 6am - 7am IST</span>
+    </div>
+  </article>
+
+  <p class="hint">Prototype: tap the AI icon in the bottom bar.</p>
+</main>
+
+<div class="nav-wrap">
+  <nav class="nav" aria-label="Main">
+    <button class="tab is-current" type="button" aria-label="Dashboard" aria-current="page">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1"/></svg>
+    </button>
+    <button class="tab" type="button" aria-label="Schedule">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>
+    </button>
+    <button class="tab tab-ai" id="ai-tab" type="button" aria-label="Gibble AI" aria-haspopup="dialog" aria-expanded="false" aria-controls="ai-pop">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#aig)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <defs><linearGradient id="aig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e2457f"/><stop offset=".5" stop-color="#7b3fe4"/><stop offset="1" stop-color="#3b5cf0"/></linearGradient></defs>
+        <ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(45 12 12)"/>
+        <ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(-45 12 12)"/>
+        <path d="M12 9.2l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z" fill="url(#aig)"/>
+      </svg>
+    </button>
+    <button class="tab" type="button" aria-label="Students">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M15.5 4.6a3.5 3.5 0 0 1 0 6.8M18 14.2A6.5 6.5 0 0 1 21.5 20"/></svg>
+    </button>
+    <button class="tab" type="button" aria-label="Library">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19.5v-15A2.5 2.5 0 0 1 7.5 2H19v20H7.5A2.5 2.5 0 0 1 5 19.5zm0 0A2.5 2.5 0 0 1 7.5 17H19"/></svg>
+    </button>
+
+    <!-- Coming-soon popover -->
+    <section class="pop" id="ai-pop" role="dialog" aria-modal="false" aria-labelledby="ai-pop-title" aria-describedby="ai-pop-sub" tabindex="-1">
+      <div class="pop-head">
+        <div>
+          <p class="eyebrow"><i></i>Gibble AI</p>
+          <h3 id="ai-pop-title">Coming soon</h3>
+          <p class="pop-sub" id="ai-pop-sub">Smart help for planning lessons and tracking every student. Here’s what’s on the way.</p>
+        </div>
+        <button class="close" id="ai-pop-close" type="button" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <ul class="caps">
+        <li>
+          <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg></span>
+          <p><strong>Topic recommendations</strong><span>What to teach next, based on each student’s progress.</span></p>
+        </li>
+        <li>
+          <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17a8.5 8.5 0 1 1 17 0"/><path d="m12 17 4-5"/><circle cx="12" cy="17" r="1"/></svg></span>
+          <p><strong>Readiness score</strong><span>How prepared a student is for the next grade or exam.</span></p>
+        </li>
+        <li>
+          <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></span>
+          <p><strong>Task history</strong><span>Every task assigned, submitted and rated, in one timeline.</span></p>
+        </li>
+        <li>
+          <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span>
+          <p><strong>Students overview</strong><span>Strengths and gaps across all your students at a glance.</span></p>
+        </li>
+      </ul>
+    </section>
+  </nav>
+</div>
+
+<script>
+  (function () {
+    var tab = document.getElementById("ai-tab");
+    var pop = document.getElementById("ai-pop");
+    var closeBtn = document.getElementById("ai-pop-close");
+    var nav = tab.parentElement;
+
+    function placeCaret() {
+      // Point the caret at the AI tab, even if the popover is clamped to the viewport.
+      var t = tab.getBoundingClientRect(), p = pop.getBoundingClientRect();
+      pop.style.setProperty("--caret-x", (t.left + t.width / 2 - p.left) + "px");
+    }
+    function open(moveFocus) {
+      pop.classList.add("is-open");
+      tab.setAttribute("aria-expanded", "true");
+      placeCaret();
+      if (moveFocus) closeBtn.focus({ preventScroll: true });
+    }
+    function close(returnFocus) {
+      if (!pop.classList.contains("is-open")) return;
+      pop.classList.remove("is-open");
+      tab.setAttribute("aria-expanded", "false");
+      if (returnFocus) tab.focus({ preventScroll: true });
+    }
+
+    tab.addEventListener("click", function () {
+      pop.classList.contains("is-open") ? close(true) : open(true);
+    });
+    closeBtn.addEventListener("click", function () { close(true); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(true); });
+    document.addEventListener("pointerdown", function (e) {
+      if (!pop.contains(e.target) && !tab.contains(e.target)) close(false);
+    });
+    // Prototype only: start with the popover showing so the design is visible at a glance.
+    open(false);
+    window.addEventListener("resize", function () { if (pop.classList.contains("is-open")) placeCaret(); });
+  })();
+</script>
