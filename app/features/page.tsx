@@ -7,6 +7,8 @@ import {
   ProgressScreen,
   RatingScreen,
   TaskScreen,
+  TabletFrame,
+  screens,
 } from "@/components/devices";
 import { PageHero } from "@/components/PageHero";
 import { DeviceBanner, DownloadCta, FeatureRow } from "@/components/sections";
@@ -17,7 +19,7 @@ export const metadata: Metadata = {
   description: "Task creation, task rating, progress tracking, a resource library and class management, in one app for teachers.",
 };
 
-const detail: Record<string, { headline: string; body: string; points: string[]; screen: ReactNode }> = {
+const detail: Record<string, { headline: string; body: string; points: string[]; screen: ReactNode; visual?: ReactNode }> = {
   "task-creation": {
     headline: "Turn every lesson into actionable practice",
     body: "Create tasks and assignments for your students and track their completion. Students work through their assigned activities, while you see what's done and what still needs attention.",
@@ -41,15 +43,16 @@ const detail: Record<string, { headline: string; body: string; points: string[];
     screen: <RatingScreen />,
   },
   "progress-tracker": {
-    headline: "Watch every learner grow",
-    body: "Every rating builds a picture of progress, for each student and each class.",
+    headline: "Track every student's learning journey",
+    body: "Give every student a structured path to progress. Gibble organises learning across two key areas: practical music and music theory.",
     points: [
-      "Trends over weeks and terms, not just one test",
-      "Highlights students who may need extra help",
-      "Compare sections side by side",
-      "Share progress summaries with parents and school leaders",
+      "Track practical instrument learning",
+      "Follow practice, tasks and performance",
+      "Teach theory alongside practical lessons",
+      "Build technique and understanding",
     ],
     screen: <ProgressScreen />,
+    visual: <TabletFrame screenshot={screens.tabletProgress} />,
   },
   library: {
     headline: "All your resources, in one tidy place",
@@ -112,7 +115,7 @@ export default function FeaturesPage() {
                     {d.headline}
                   </>
                 }
-                visual={<PhoneFrame>{d.screen}</PhoneFrame>}
+                visual={d.visual ?? <PhoneFrame>{d.screen}</PhoneFrame>}
               >
                 <p>{d.body}</p>
                 <ul className="space-y-2 pt-2 text-base text-ink">
