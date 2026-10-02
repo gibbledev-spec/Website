@@ -24,15 +24,15 @@ function Hero() {
     <section className="relative px-4 pb-16 pt-10 sm:px-6 md:pt-16">
       <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-[1.05fr_1fr]">
         <div>
-          <h1 className="text-5xl font-black leading-[1.02] sm:text-6xl lg:text-7xl">
-            Immerse in the experience of{" "}
-            <span className="relative inline-block">
-              learning.
+          <h1 className="text-[clamp(2rem,10.5vw,2.6rem)] font-black leading-[1.02] sm:text-6xl lg:text-7xl">
+            The All-in-One Workspace for{" "}
+            <span className="relative inline-block whitespace-nowrap">
+              Music Teachers.
               <Underline className="absolute -bottom-2 left-0 h-3 w-full text-brand" />
             </span>
           </h1>
           <p className="mt-6 max-w-lg text-lg text-ink-soft">
-            Create tasks in minutes, rate student work with feedback that helps, and watch every learner grow. All from one app on your phone or tablet.
+            Classes, assignments, progress tracking, and an intelligent AI assistant to help you manage it all. Structure your teaching and accelerate your students&apos; progress.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Button href="#download">Download app</Button>
