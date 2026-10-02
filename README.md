@@ -33,4 +33,5 @@ Search the code for `TODO`. Main items:
 - `public/screens/`: app screenshots shown in the phone and tablet frames (`components/devices.tsx`)
 - `components/ui.tsx`: store badges are drafts; use the official Apple / Google artwork
 - `app/pricing/page.tsx`: plan prices and limits
-- `app/privacy/`, `app/terms/`: legal text
+- `app/terms/`: legal text
+- `app/privacy/page.tsx`: privacy policy needs a legal review before launch
