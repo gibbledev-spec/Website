@@ -1,11 +1,10 @@
 import Link from "next/link";
 import {
+  OnboardScreen,
   PhoneFrame,
-  ProgressScreen,
-  RatingScreen,
+  StudentsScreen,
   TabletFrame,
   screens,
-  TaskScreen,
 } from "@/components/devices";
 import { DeviceBanner, DownloadCta, FeatureRow, PraiseMarquee } from "@/components/sections";
 import { Testimonials } from "@/components/Testimonials";
@@ -181,28 +180,28 @@ function TeacherCan() {
       <div className="mx-auto mt-14 max-w-6xl space-y-20">
         <FeatureRow
           bg="bg-mint"
-          title="Plan a week of work in one sitting"
-          visual={<PhoneFrame><TaskScreen /></PhoneFrame>}
-          cta={<Button href="/features/#task-creation" variant="dark">Explore task creation</Button>}
+          title="Onboard students and create their profiles"
+          visual={<PhoneFrame><OnboardScreen /></PhoneFrame>}
+          cta={<Button href="/features/#class-management" variant="dark">Explore student profiles</Button>}
         >
-          <p>Write a task once, attach a worksheet from your library, and assign it to every section with its own due date. Gibble reminds students so you don&apos;t have to.</p>
+          <p>Add a new student in a minute. Save their age, level, instrument and lesson time in one profile you can open whenever you need it.</p>
         </FeatureRow>
         <FeatureRow
           reverse
           bg="bg-butter"
-          title="Give feedback that actually lands"
-          visual={<PhoneFrame><RatingScreen /></PhoneFrame>}
-          cta={<Button href="/features/#task-rating" variant="dark">Explore task rating</Button>}
+          title="Track every student's learning journey"
+          visual={<TabletFrame screenshot={screens.tabletProgress} />}
+          cta={<Button href="/features/#progress-tracker" variant="dark">Explore progress tracking</Button>}
         >
-          <p>Rate each submission with stars and a short note in seconds. Students see exactly what went well and what to try next.</p>
+          <p>Follow each student&apos;s progress in technique, reading and posture, lesson by lesson, so you always know what to work on next.</p>
         </FeatureRow>
         <FeatureRow
           bg="bg-lilac"
-          title="Spot who needs help, early"
-          visual={<PhoneFrame><ProgressScreen /></PhoneFrame>}
-          cta={<Button href="/features/#progress-tracker" variant="dark">Explore progress tracking</Button>}
+          title="Manage all your students and their classes"
+          visual={<PhoneFrame><StudentsScreen /></PhoneFrame>}
+          cta={<Button href="/features/#class-management" variant="dark">Explore student management</Button>}
         >
-          <p>Every rating feeds a live picture of each student and class. See trends over weeks, not just the last test, and step in before anyone falls behind.</p>
+          <p>See every student and their upcoming classes in one place, and find anyone&apos;s profile, lessons and progress in a tap.</p>
         </FeatureRow>
       </div>
     </section>

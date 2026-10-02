@@ -237,3 +237,75 @@ export function TabletDashboard() {
     </div>
   );
 }
+
+export function OnboardScreen() {
+  const field = (l: string, v: string) => (
+    <div className="rounded-xl bg-cream px-3 py-2">
+      <p className="text-[10px] font-semibold text-ink-soft">{l}</p>
+      <p className="text-xs font-bold">{v}</p>
+    </div>
+  );
+  return (
+    <>
+      <AppBar sub="New student" title="Create profile" />
+      <div className="space-y-2 px-4">
+        <div className="flex items-center gap-3">
+          <span className="grid h-10 w-10 place-items-center rounded-full bg-sky text-sm font-bold">KS</span>
+          <span className="text-[11px] font-semibold text-ink-soft">+ Add photo</span>
+        </div>
+        {field("Student name", "Kevin Shah")}
+        <div className="grid grid-cols-2 gap-2">
+          {field("Age", "15")}
+          {field("Level", "Basic")}
+        </div>
+        {field("Lesson", "Mon · 4:00–5:00 pm")}
+        <div className="rounded-xl bg-cream p-3">
+          <p className="text-[10px] font-semibold text-ink-soft">Instrument</p>
+          <div className="mt-1.5 flex flex-wrap gap-1.5">
+            <span className="rounded-full bg-butter px-2.5 py-1 text-[10px] font-bold">🎹 Piano</span>
+            <span className="rounded-full bg-lilac px-2.5 py-1 text-[10px] font-bold">🎼 Theory</span>
+          </div>
+        </div>
+      </div>
+      <div className="mt-auto p-4">
+        <div className="rounded-full bg-brand py-2.5 text-center text-xs font-bold text-white">Add student</div>
+      </div>
+    </>
+  );
+}
+
+export function StudentsScreen() {
+  const students = [
+    ["Kevin Shah", "Piano · Basic", "Mon 4:00 pm", "bg-sky"],
+    ["Ananya Rao", "Theory · Grade 2", "Mon 5:30 pm", "bg-butter"],
+    ["Rohan Mehta", "Piano · Grade 1", "Tue 6:00 pm", "bg-mint"],
+    ["Sara Khan", "Piano · Basic", "Wed 4:30 pm", "bg-peach"],
+  ];
+  return (
+    <>
+      <AppBar sub="My students" title="24 students" />
+      <div className="px-4">
+        <div className="mb-2.5 flex gap-1.5">
+          {["All", "Piano", "Theory"].map((t, i) => (
+            <span key={t} className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${i === 0 ? "bg-ink text-white" : "bg-cream"}`}>{t}</span>
+          ))}
+        </div>
+        <div className="space-y-2">
+          {students.map(([n, d, t, c]) => (
+            <div key={n} className="flex items-center gap-2.5 rounded-xl bg-cream p-2.5">
+              <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-[10px] font-bold ${c}`}>
+                {n.split(" ").map((w) => w[0]).join("")}
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[11px] font-bold">{n}</p>
+                <p className="truncate text-[9px] text-ink-soft">{d}</p>
+                <p className="truncate text-[9px] font-semibold text-brand">{t}</p>
+              </div>
+              <span className="text-xs text-ink-soft">›</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
