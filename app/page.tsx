@@ -101,17 +101,17 @@ const snippets: Record<string, React.ReactNode> = {
   "task-creation": (
     <div className="space-y-2">
       <div className="flex items-center justify-between rounded-xl bg-cream px-3 py-2 text-sm font-semibold">
-        📝 Fractions practice <span className="rounded-full bg-butter px-2 py-0.5 text-xs">5A, 5B</span>
+        🎹 Für Elise · Bars 1–8 <span className="rounded-full bg-butter px-2 py-0.5 text-xs">Kevin</span>
       </div>
       <div className="flex items-center justify-between rounded-xl bg-cream px-3 py-2 text-sm font-semibold">
-        🧪 Plant life cycle <span className="rounded-full bg-butter px-2 py-0.5 text-xs">Due Fri</span>
+        🎼 C major scale <span className="rounded-full bg-butter px-2 py-0.5 text-xs">Due Fri</span>
       </div>
     </div>
   ),
   "task-rating": (
     <div className="flex items-center justify-between gap-3">
       <div>
-        <p className="text-sm font-bold">Diya · Essay</p>
+        <p className="text-sm font-bold">Kevin · Für Elise</p>
         <p className="text-xl tracking-wider text-[#f59e0b]">★★★★★</p>
       </div>
       <span className="rounded-full bg-mint px-3 py-1.5 text-sm font-bold text-mint-ink">Brilliant! 🌟</span>
@@ -126,7 +126,7 @@ const snippets: Record<string, React.ReactNode> = {
   ),
   library: (
     <div className="grid grid-cols-3 gap-2 text-center text-xs font-bold">
-      {[["📄", "Worksheets"], ["🎬", "Videos"], ["🧩", "Quizzes"]].map(([e, l]) => (
+      {[["🎼", "Sheet music"], ["🎬", "Videos"], ["🎧", "Audio"]].map(([e, l]) => (
         <div key={l} className="rounded-xl bg-cream p-2">
           <p className="text-xl">{e}</p>
           {l}
@@ -139,7 +139,7 @@ const snippets: Record<string, React.ReactNode> = {
       {["bg-butter", "bg-mint", "bg-lilac", "bg-aqua", "bg-sky"].map((c, i) => (
         <span key={c} className={`-ml-2 h-9 w-9 rounded-full ring-2 ring-white first:ml-0 ${c}`} style={{ zIndex: 5 - i }} />
       ))}
-      <span className="ml-3 text-sm font-bold">32 students · 5A</span>
+      <span className="ml-3 text-sm font-bold">32 students</span>
     </div>
   ),
 };
