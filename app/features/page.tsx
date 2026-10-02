@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import {
-  ClassScreen,
   LibraryScreen,
   PhoneFrame,
   ProgressScreen,
   RatingScreen,
+  StudentsScreen,
   TaskScreen,
   TabletFrame,
   screens,
@@ -66,15 +66,15 @@ const detail: Record<string, { headline: string; body: string; points: string[];
     screen: <LibraryScreen />,
   },
   "class-management": {
-    headline: "Every class, organised",
-    body: "Set up classes and students once, and Gibble keeps everything sorted from there.",
+    headline: "Keep all your students organised in one place",
+    body: "Whether you teach a handful of students or many, Gibble keeps you organised without scattered notes, spreadsheets or multiple tools.",
     points: [
-      "Create classes and sections in seconds",
-      "Invite students with a simple class code",
-      "Switch between classes from one home screen",
-      "Archive old classes at the end of the year",
+      "Create individual student profiles",
+      "See each student's learning journey",
+      "Track progress, tasks and activities",
+      "Replace notes, spreadsheets and apps",
     ],
-    screen: <ClassScreen />,
+    screen: <StudentsScreen />,
   },
 };
 
