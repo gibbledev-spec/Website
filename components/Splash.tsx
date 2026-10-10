@@ -189,8 +189,8 @@ export function Splash({ mode = "site" }: { mode?: "site" | "intro" }) {
         return u >= 1;
       }
 
-      // Backdrop: black → colour, then away.
-      el.style.setProperty("--bg", String(smooth(T.bgIn, T.bgIn + T.bgDur, t)));
+      // Backdrop: the colour version blooms from black; the white version is on its gradient from the first frame.
+      el.style.setProperty("--bg", String(variant === "white" ? 1 : smooth(T.bgIn, T.bgIn + T.bgDur, t)));
       el.style.setProperty("--refl", String(smooth(T.bgIn + 0.1, T.bgIn + T.bgDur + 0.2, t) * (1 - smooth(0, 0.3, u))));
       backdrop.style.opacity = String(1 - fade);
 
