@@ -41,12 +41,12 @@ const LETTERS = [
 
 // Timeline, in seconds.
 const T = {
-  markIn: 0.08, // G zooms down onto the stage
+  gIn: 0.12, // G flies in first
   bgIn: 0.4, // backdrop fades from black to colour
   bgDur: 0.55,
-  lettersIn: 0.62, // first flying letter
+  lettersIn: 0.5, // i b b l e follow
   stagger: 0.095,
-  recentre: [0.55, 1.5], // word slides from G-centred to word-centred
+  recentre: [0.45, 1.4], // word slides from G-centred to word-centred
   sheen: 1.62,
   exit: 2.65, // logo travels into the header
   exitDur: 0.85,
@@ -64,7 +64,6 @@ const smooth = (a: number, b: number, t: number) => {
 };
 const easeInOutCubic = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - (-2 * x + 2) ** 3 / 2);
 const easeInOutQuint = (x: number) => (x < 0.5 ? 16 * x ** 5 : 1 - (-2 * x + 2) ** 5 / 2);
-const easeOutCubic = (x: number) => 1 - (1 - x) ** 3;
 
 /** Displacement of an underdamped spring released from 1; settles to 0 with a small overshoot. */
 function spring(t: number, zeta: number, omega: number) {
@@ -200,19 +199,10 @@ export function Splash({ mode = "site" }: { mode?: "site" | "intro" }) {
       const m = exitFrom ?? { dx: 0, dy: 0, scale: 1 };
       word.style.transform = `translate3d(${(offset + m.dx * e).toFixed(2)}px, ${(m.dy * e).toFixed(2)}px, 0) scale(${lerp(1, m.scale, e).toFixed(4)})`;
 
-      // G: arrives large and soft, springs down to size with a slight undershoot.
-      const tg = t - T.markIn;
-      const g = letters[0];
-      const gs = 1 + 1.4 * spring(tg, 0.62, 9.5);
-      g.style.opacity = String(smooth(0, 0.22, tg));
-      g.style.transform = `scale(${gs.toFixed(4)})`;
-      const blur = 14 * (1 - easeOutCubic(clamp(tg / 0.42)));
-      g.style.filter = blur > 0.05 ? `blur(${blur.toFixed(2)}px)` : "";
-
-      // i b b l e: fly in from the right edge, staggered.
-      for (let i = 1; i < LETTERS.length; i++) {
+      // Every letter flies in from the right edge: G first, landing in the centre, then the rest, staggered.
+      for (let i = 0; i < LETTERS.length; i++) {
         const L = LETTERS[i];
-        const tau = t - (T.lettersIn + (i - 1) * T.stagger);
+        const tau = t - (i === 0 ? T.gIn : T.lettersIn + (i - 1) * T.stagger);
         const dist = Math.max(vw * 0.98 - (frameLeft + offset + L.x * k), W * 0.6);
         const p = flight(tau, dist);
         letters[i].style.opacity = String(p.opacity);
@@ -313,11 +303,10 @@ export function Splash({ mode = "site" }: { mode?: "site" | "intro" }) {
             const src = variant === "white" ? `/splash/${L.id}-white.webp` : colour;
             return (
               <div key={L.id} className="contents">
-                {i > 0 &&
-                  GHOSTS.map((_, j) => (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img key={j} data-ghost={i} src={src} alt="" className="gibble-splash__letter" style={{ ...box, opacity: 0 }} />
-                  ))}
+                {GHOSTS.map((_, j) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={j} data-ghost={i} src={src} alt="" className="gibble-splash__letter" style={{ ...box, opacity: 0 }} />
+                ))}
                 <div data-letter className="gibble-splash__letter" style={{ ...box, opacity: 0 }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={colour} alt="" width={L.w} height={L.h} className="gibble-splash__face" />
