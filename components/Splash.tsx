@@ -19,6 +19,11 @@ import { useEffect, useRef, useState } from "react";
  *    boundaries as the colour slices.
  * DEFAULT_VARIANT picks the one visitors see; ?splash=white or ?splash=colour
  * previews either.
+ *
+ * mode="intro" (the /intro page) plays the white animation on its own and holds
+ * on the finished logo instead of handing off to the site. With ?render it waits
+ * for window.__introRender(t) calls instead of playing, so it can be captured
+ * frame by frame into a video.
  */
 type Variant = "colour" | "white";
 const DEFAULT_VARIANT: Variant = "colour";
@@ -83,7 +88,15 @@ function flight(tau: number, dist: number) {
 const letterTransform = (p: ReturnType<typeof flight>) =>
   `translate3d(${p.x.toFixed(2)}px, 0, 0) perspective(700px) rotateY(${p.rotY.toFixed(2)}deg) rotateZ(${p.rotZ.toFixed(2)}deg) scale(${p.scale.toFixed(4)})`;
 
-export function Splash() {
+declare global {
+  interface Window {
+    __introRender?: (t: number) => void;
+    __introReady?: boolean;
+  }
+}
+
+export function Splash({ mode = "site" }: { mode?: "site" | "intro" }) {
+  const intro = mode === "intro";
   const [visible, setVisible] = useState(true);
   // Letters render once the variant is known on the client; until then the black stage covers the page.
   const [variant, setVariant] = useState<Variant | null>(null);
@@ -91,13 +104,17 @@ export function Splash() {
 
   useEffect(() => {
     const html = document.documentElement;
+    if (intro) {
+      setVariant("white");
+      return;
+    }
     if (html.classList.contains("splash-done")) {
       setVisible(false);
       return;
     }
     const v = html.dataset.splash;
     setVariant(v === "white" || v === "colour" ? v : DEFAULT_VARIANT);
-  }, []);
+  }, [intro]);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -111,7 +128,7 @@ export function Splash() {
     const word = q<HTMLElement>("[data-word]");
     const letters = qa<HTMLElement>("[data-letter]");
     const ghosts = letters.map((_, i) => qa<HTMLElement>(`[data-ghost="${i}"]`));
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = !intro && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     html.style.overflow = "hidden";
     if (reduced) letters.forEach((l) => (l.style.opacity = "1"));
@@ -146,7 +163,7 @@ export function Splash() {
       };
     };
 
-    const exitAt = reduced ? REDUCED.exit : T.exit;
+    const exitAt = intro ? Infinity : reduced ? REDUCED.exit : T.exit;
     const exitDur = reduced ? REDUCED.exitDur : T.exitDur;
 
     const render = (t: number) => {
@@ -228,7 +245,7 @@ export function Splash() {
 
     // Tap, click or any key skips straight to the hand-off.
     const skip = () => {
-      skipTo = exitAt;
+      if (!intro) skipTo = exitAt;
     };
     el.addEventListener("pointerdown", skip);
     window.addEventListener("keydown", skip);
@@ -238,8 +255,15 @@ export function Splash() {
     const ready = Promise.all(imgs.map((img) => img.decode().catch(() => {})));
     const timeout = new Promise((r) => setTimeout(r, 1500));
     let cancelled = false;
-    Promise.race([ready, timeout]).then(() => {
-      if (!cancelled) raf = requestAnimationFrame(tick);
+    const capture = intro && /[?&]render\b/.test(location.search);
+    // When capturing, wait for every slice however long it takes.
+    (capture ? ready : Promise.race([ready, timeout])).then(() => {
+      if (cancelled) return;
+      if (capture) {
+        window.__introRender = (t) => void render(t);
+        render(0);
+        window.__introReady = true;
+      } else raf = requestAnimationFrame(tick);
     });
 
     return () => {
@@ -249,14 +273,31 @@ export function Splash() {
       window.removeEventListener("keydown", skip);
       html.style.overflow = "";
     };
-  }, [variant]);
+  }, [variant, intro]);
 
   if (!visible) return null;
 
   return (
-    <div ref={root} className="gibble-splash" data-variant={variant ?? undefined} aria-hidden="true">
+    <div ref={root} className={`gibble-splash${intro ? " is-intro" : ""}`} data-variant={variant ?? undefined} aria-hidden="true">
       <div data-backdrop className="gibble-splash__backdrop">
-        <div className="gibble-splash__colour" />
+        <div className="gibble-splash__colour">
+          {variant === "white" && (
+            <svg className="gibble-splash__waves" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              {/* Soft diagonal light bands, as on the app icon. */}
+              {[-160, -80, 0, 80, 160, 240].map((o, i) => (
+                <path
+                  key={o}
+                  d={`M${-120 + o} 520 C ${-20 + o} 380, ${60 + o} 330, ${120 + o} 220 S ${260 + o} 40, ${380 + o} -120`}
+                  fill="none"
+                  stroke={i % 2 ? "#000" : "#fff"}
+                  strokeOpacity={i % 2 ? 0.045 : 0.09}
+                  strokeWidth="42"
+                  strokeLinecap="round"
+                />
+              ))}
+            </svg>
+          )}
+        </div>
       </div>
 
       <div data-frame className="gibble-splash__frame">

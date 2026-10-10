@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     "Create tasks, rate student work, track progress and manage classes — all from one app on your phone or tablet.",
 };
 
-const splashGate = `(function(){var d=document.documentElement;try{var m=/[?&]splash(?:=(\\w+))?\\b/.exec(location.search);if(m&&m[1])d.dataset.splash=m[1];if(!m&&sessionStorage.getItem("gibble:splash")){d.classList.add("splash-done");return}}catch(e){}d.classList.add("splash-active")})()`;
+const splashGate = `(function(){var d=document.documentElement;try{if(/^\\/intro/.test(location.pathname)){d.classList.add("splash-done");return}var m=/[?&]splash(?:=(\\w+))?\\b/.exec(location.search);if(m&&m[1])d.dataset.splash=m[1];if(!m&&sessionStorage.getItem("gibble:splash")){d.classList.add("splash-done");return}}catch(e){}d.classList.add("splash-active")})()`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
