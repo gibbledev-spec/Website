@@ -25,13 +25,13 @@ export const metadata: Metadata = {
     "Create tasks, rate student work, track progress and manage classes — all from one app on your phone or tablet.",
 };
 
-const splashGate = `(function(){var d=document.documentElement;try{if(!/[?&]splash\\b/.test(location.search)&&sessionStorage.getItem("gibble:splash")){d.classList.add("splash-done");return}}catch(e){}d.classList.add("splash-active")})()`;
+const splashGate = `(function(){var d=document.documentElement;try{var m=/[?&]splash(?:=(\\w+))?\\b/.exec(location.search);if(m&&m[1])d.dataset.splash=m[1];if(!m&&sessionStorage.getItem("gibble:splash")){d.classList.add("splash-done");return}}catch(e){}d.classList.add("splash-active")})()`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${fraunces.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <head>
-        {/* Decide before first paint whether the welcome splash plays (once per session, or with ?splash). */}
+        {/* Decide before first paint whether the welcome splash plays (once per session; ?splash or ?splash=white|colour replays it). */}
         <script dangerouslySetInnerHTML={{ __html: splashGate }} />
         <noscript>
           <style>{".gibble-splash{display:none}"}</style>

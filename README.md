@@ -23,7 +23,7 @@ npm run lint     # type check
 | `app/about/` | Mission, what Gibble is, the learning cycle, contact form |
 | `app/privacy/`, `app/terms/` | Legal placeholders |
 
-Shared pieces live in `components/`. The welcome splash (`components/Splash.tsx`) plays once per browser session; add `?splash` to any URL to replay it. Its letter images in `public/splash/` are exact slices of `public/gibble-logo.png`, so regenerate them if the logo changes. Colours and fonts are design tokens in `app/globals.css`.
+Shared pieces live in `components/`. The welcome splash (`components/Splash.tsx`) plays once per browser session; add `?splash` to any URL to replay it. It has two looks, the full-colour logo and solid white letters on a warm gradient: preview them with `?splash=colour` and `?splash=white`, and pick the default with `DEFAULT_VARIANT` in the component. Its letter images in `public/splash/` are exact slices of `public/gibble-logo.png`, so regenerate them if the logo changes. Colours and fonts are design tokens in `app/globals.css`.
 
 ## Placeholders to replace
 

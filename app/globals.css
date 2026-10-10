@@ -130,6 +130,25 @@ html.splash-active header a[aria-label="Gibble home"] img {
   width: 100%;
   height: auto;
 }
+/* White variant: solid white letterforms that take on the logo's colours during the hand-off. */
+.gibble-splash[data-variant="white"] .gibble-splash__colour {
+  background:
+    radial-gradient(70% 45% at 50% 30%, rgb(255 190 120 / 0.35), transparent 70%),
+    linear-gradient(180deg, #f2672c 0%, #e9442b 45%, #c8203f 100%);
+}
+.gibble-splash[data-variant="white"] .gibble-splash__face {
+  opacity: var(--tint, 0);
+}
+.gibble-splash__letter .gibble-splash__white {
+  position: absolute;
+  inset: 0;
+  opacity: calc(1 - var(--tint, 0));
+  filter: drop-shadow(0 3px 5px rgb(110 10 30 / 0.28));
+}
+.gibble-splash[data-variant="white"] .gibble-splash__reflection {
+  opacity: calc(var(--refl) * 0.3);
+}
+
 .gibble-splash__letter .gibble-splash__reflection {
   position: absolute;
   top: 100%;

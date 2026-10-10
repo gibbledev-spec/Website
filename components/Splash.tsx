@@ -10,7 +10,19 @@ import { useEffect, useRef, useState } from "react";
  * (616×227). Every visible pixel belongs to exactly one slice, so the settled
  * letters recompose the original logo pixel for pixel. x/y/w/h are each
  * slice's position inside the original image.
+ *
+ * Two looks:
+ *  - "colour": the full-colour logo on a deep indigo stage.
+ *  - "white":  the letterforms in solid white on a warm brand gradient (closest
+ *    to the reference); they take on the logo's colours as they glide into the
+ *    header. The *-white slices are the logo's white fill, cut on the same
+ *    boundaries as the colour slices.
+ * DEFAULT_VARIANT picks the one visitors see; ?splash=white or ?splash=colour
+ * previews either.
  */
+type Variant = "colour" | "white";
+const DEFAULT_VARIANT: Variant = "colour";
+
 const LOGO_W = 616;
 const LOGO_H = 227;
 const LETTERS = [
@@ -73,14 +85,23 @@ const letterTransform = (p: ReturnType<typeof flight>) =>
 
 export function Splash() {
   const [visible, setVisible] = useState(true);
+  // Letters render once the variant is known on the client; until then the black stage covers the page.
+  const [variant, setVariant] = useState<Variant | null>(null);
   const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const html = document.documentElement;
-    if (html.classList.contains("splash-done") || !root.current) {
+    if (html.classList.contains("splash-done")) {
       setVisible(false);
       return;
     }
+    const v = html.dataset.splash;
+    setVariant(v === "white" || v === "colour" ? v : DEFAULT_VARIANT);
+  }, []);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    if (!variant || !root.current) return;
 
     const el = root.current;
     const q = <E extends Element>(s: string) => el.querySelector<E>(s)!;
@@ -140,6 +161,8 @@ export function Splash() {
       const e = reduced ? 0 : easeInOutQuint(u);
       const fade = reduced ? smooth(0, 1, u) : smooth(0.3, 0.9, u);
 
+      el.style.setProperty("--tint", String(reduced ? u : smooth(0.1, 0.7, u)));
+
       if (reduced) {
         const a = smooth(0, REDUCED.fadeIn, t) * (1 - fade);
         backdrop.style.opacity = String(1 - fade);
@@ -188,7 +211,7 @@ export function Splash() {
         });
       }
 
-      if (t >= T.sheen && !el.classList.contains("is-sheen")) el.classList.add("is-sheen");
+      if (variant === "colour" && t >= T.sheen && !el.classList.contains("is-sheen")) el.classList.add("is-sheen");
       return u >= 1;
     };
 
@@ -226,26 +249,27 @@ export function Splash() {
       window.removeEventListener("keydown", skip);
       html.style.overflow = "";
     };
-  }, []);
+  }, [variant]);
 
   if (!visible) return null;
 
   return (
-    <div ref={root} className="gibble-splash" aria-hidden="true">
+    <div ref={root} className="gibble-splash" data-variant={variant ?? undefined} aria-hidden="true">
       <div data-backdrop className="gibble-splash__backdrop">
         <div className="gibble-splash__colour" />
       </div>
 
       <div data-frame className="gibble-splash__frame">
         <div data-word className="gibble-splash__word">
-          {LETTERS.map((L, i) => {
+          {variant && LETTERS.map((L, i) => {
             const box = {
               left: `${(L.x / LOGO_W) * 100}%`,
               top: `${(L.y / LOGO_H) * 100}%`,
               width: `${(L.w / LOGO_W) * 100}%`,
               aspectRatio: `${L.w} / ${L.h}`,
             };
-            const src = `/splash/${L.id}.webp`;
+            const colour = `/splash/${L.id}.webp`;
+            const src = variant === "white" ? `/splash/${L.id}-white.webp` : colour;
             return (
               <div key={L.id} className="contents">
                 {i > 0 &&
@@ -255,14 +279,18 @@ export function Splash() {
                   ))}
                 <div data-letter className="gibble-splash__letter" style={{ ...box, opacity: 0 }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={src} alt="" width={L.w} height={L.h} />
+                  <img src={colour} alt="" width={L.w} height={L.h} className="gibble-splash__face" />
+                  {variant === "white" && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={src} alt="" className="gibble-splash__white" />
+                  )}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={src} alt="" className="gibble-splash__reflection" />
                 </div>
               </div>
             );
           })}
-          <div className="gibble-splash__sheen" />
+          {variant === "colour" && <div className="gibble-splash__sheen" />}
         </div>
       </div>
     </div>
