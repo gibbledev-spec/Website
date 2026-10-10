@@ -71,3 +71,93 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Welcome splash (components/Splash.tsx) */
+.gibble-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  cursor: pointer;
+  user-select: none;
+  --bg: 0;
+  --refl: 0;
+  /* Failsafe: if the script never runs, get out of the way. */
+  animation: splash-failsafe 0.4s ease 7s forwards;
+}
+html.splash-done .gibble-splash { display: none; }
+html.splash-active header a[aria-label="Gibble home"] img {
+  visibility: hidden;
+  animation: splash-logo-failsafe 0s 7s forwards;
+}
+@keyframes splash-failsafe { to { opacity: 0; visibility: hidden; } }
+@keyframes splash-logo-failsafe { to { visibility: visible; } }
+
+.gibble-splash__backdrop {
+  position: absolute;
+  inset: 0;
+  background: #000;
+}
+.gibble-splash__colour {
+  position: absolute;
+  inset: 0;
+  opacity: var(--bg);
+  background:
+    radial-gradient(42% 38% at 28% 58%, rgb(255 140 40 / 0.22), transparent 70%),
+    radial-gradient(42% 38% at 72% 42%, rgb(20 200 220 / 0.2), transparent 70%),
+    radial-gradient(90% 70% at 50% 45%, #2b2470 0%, #17133f 55%, #0a0920 100%);
+}
+
+.gibble-splash__frame {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(74vw, 440px);
+  aspect-ratio: 616 / 227;
+  translate: -50% -50%;
+}
+.gibble-splash__word {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.gibble-splash__letter {
+  position: absolute;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+.gibble-splash__letter img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.gibble-splash__letter .gibble-splash__reflection {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  transform: scaleY(-1);
+  opacity: calc(var(--refl) * 0.22);
+  -webkit-mask-image: linear-gradient(to top, #000, transparent 55%);
+  mask-image: linear-gradient(to top, #000, transparent 55%);
+}
+
+/* A single glint across the assembled logo. */
+.gibble-splash__sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(105deg, transparent 38%, rgb(255 255 255 / 0.6) 50%, transparent 62%) no-repeat;
+  background-size: 260% 100%;
+  background-position: 130% 0;
+  -webkit-mask: url(/gibble-logo.png) center / 100% 100% no-repeat;
+  mask: url(/gibble-logo.png) center / 100% 100% no-repeat;
+}
+.gibble-splash.is-sheen .gibble-splash__sheen {
+  animation: splash-sheen 0.95s cubic-bezier(0.45, 0, 0.25, 1) forwards;
+}
+@keyframes splash-sheen {
+  0% { opacity: 0; background-position: 130% 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; background-position: -30% 0; }
+}
