@@ -80,7 +80,6 @@
   cursor: pointer;
   user-select: none;
   --bg: 0;
-  --refl: 0;
   /* Failsafe: if the script never runs, get out of the way. */
   animation: splash-failsafe 0.4s ease 7s forwards;
 }
@@ -157,20 +156,6 @@ html.splash-active header a[aria-label="Gibble home"] img {
   /* A soft shadow down and to the right, as on the app icon. */
   filter: drop-shadow(0.25em 0.4em 0.45em rgb(60 10 70 / 0.35));
 }
-.gibble-splash[data-variant="white"] .gibble-splash__reflection {
-  opacity: calc(var(--refl) * 0.3);
-}
-
-.gibble-splash__letter .gibble-splash__reflection {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  transform: scaleY(-1);
-  opacity: calc(var(--refl) * 0.22);
-  -webkit-mask-image: linear-gradient(to top, #000, transparent 55%);
-  mask-image: linear-gradient(to top, #000, transparent 55%);
-}
-
 /* A single glint across the assembled logo. */
 .gibble-splash__sheen {
   position: absolute;

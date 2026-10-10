@@ -41,12 +41,10 @@ const LETTERS = [
 
 // Timeline, in seconds.
 const T = {
-  gIn: 0.12, // G flies in first
+  lettersIn: 0.12, // G launches; i b b l e follow, staggered
   bgIn: 0.4, // backdrop fades from black to colour
   bgDur: 0.55,
-  lettersIn: 0.5, // i b b l e follow
-  stagger: 0.095,
-  recentre: [0.45, 1.4], // word slides from G-centred to word-centred
+  stagger: 0.14,
   sheen: 1.62,
   exit: 2.65, // logo travels into the header
   exitDur: 0.85,
@@ -62,7 +60,6 @@ const smooth = (a: number, b: number, t: number) => {
   const x = clamp((t - a) / (b - a));
   return x * x * (3 - 2 * x);
 };
-const easeInOutCubic = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - (-2 * x + 2) ** 3 / 2);
 const easeInOutQuint = (x: number) => (x < 0.5 ? 16 * x ** 5 : 1 - (-2 * x + 2) ** 5 / 2);
 
 /** Displacement of an underdamped spring released from 1; settles to 0 with a small overshoot. */
@@ -74,7 +71,7 @@ function spring(t: number, zeta: number, omega: number) {
 
 /** Pose of a flying letter `tau` seconds after it launches. `dist` is its travel in px. */
 function flight(tau: number, dist: number) {
-  const r = spring(tau, 0.7, 11); // 1 → 0, dips slightly below 0 = lands a touch past its slot
+  const r = spring(tau, 0.7, 7.5); // 1 → 0, dips slightly below 0 = lands a touch past its slot
   return {
     x: r * dist,
     rotY: r * 68,
@@ -183,27 +180,22 @@ export function Splash({ mode = "site" }: { mode?: "site" | "intro" }) {
         const a = smooth(0, REDUCED.fadeIn, t) * (1 - fade);
         backdrop.style.opacity = String(1 - fade);
         el.style.setProperty("--bg", String(smooth(0, REDUCED.fadeIn, t)));
-        el.style.setProperty("--refl", "1");
         word.style.opacity = String(a);
         return u >= 1;
       }
 
       // Backdrop: the colour version blooms from black; the white version is on its gradient from the first frame.
       el.style.setProperty("--bg", String(variant === "white" ? 1 : smooth(T.bgIn, T.bgIn + T.bgDur, t)));
-      el.style.setProperty("--refl", String(smooth(T.bgIn + 0.1, T.bgIn + T.bgDur + 0.2, t) * (1 - smooth(0, 0.3, u))));
       backdrop.style.opacity = String(1 - fade);
 
-      // The group starts with G in the centre of the screen and drifts to centre the full word.
-      const gCentre = (LETTERS[0].x + LETTERS[0].w / 2) * k;
-      const offset = (W / 2 - gCentre) * (1 - easeInOutCubic(smooth(T.recentre[0], T.recentre[1], t) ** 0.9));
       const m = exitFrom ?? { dx: 0, dy: 0, scale: 1 };
-      word.style.transform = `translate3d(${(offset + m.dx * e).toFixed(2)}px, ${(m.dy * e).toFixed(2)}px, 0) scale(${lerp(1, m.scale, e).toFixed(4)})`;
+      word.style.transform = `translate3d(${(m.dx * e).toFixed(2)}px, ${(m.dy * e).toFixed(2)}px, 0) scale(${lerp(1, m.scale, e).toFixed(4)})`;
 
-      // Every letter flies in from the right edge: G first, landing in the centre, then the rest, staggered.
+      // Every letter slides in from just past the right edge straight into its slot: G first, then the rest, staggered.
       for (let i = 0; i < LETTERS.length; i++) {
         const L = LETTERS[i];
-        const tau = t - (i === 0 ? T.gIn : T.lettersIn + (i - 1) * T.stagger);
-        const dist = Math.max(vw * 0.98 - (frameLeft + offset + L.x * k), W * 0.6);
+        const tau = t - (T.lettersIn + i * T.stagger);
+        const dist = vw + 8 - (frameLeft + L.x * k);
         const p = flight(tau, dist);
         letters[i].style.opacity = String(p.opacity);
         letters[i].style.transform = letterTransform(p);
@@ -314,8 +306,6 @@ export function Splash({ mode = "site" }: { mode?: "site" | "intro" }) {
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={src} alt="" className="gibble-splash__white" />
                   )}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={src} alt="" className="gibble-splash__reflection" />
                 </div>
               </div>
             );
