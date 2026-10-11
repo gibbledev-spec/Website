@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PhoneFrame, TabletFrame } from "@/components/devices";
 import { PageHero } from "@/components/PageHero";
 import { site } from "@/lib/site";
 
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
   description: "How Gibble collects, uses, shares and protects your personal information, and the privacy rights you have.",
 };
 
-type Part = { heading: string; paras?: string[]; bullets?: string[] };
+type Part = { heading: string; paras?: string[]; bullets?: string[]; deleteGuide?: boolean };
 type Section = { id: string; heading: string; paras?: string[]; bullets?: string[]; parts?: Part[] };
 
 const email = site.email;
@@ -132,6 +133,7 @@ const sections: Section[] = [
         paras: [
           "You have the right to end this relationship is by deleting your account. If you choose to do so, we will delete all your personal data from our systems, including backups within 30 days, unless there is a legitimate business interest to keep the data, such as to comply with legal obligations, to enforce agreements or to resolve disputes.",
         ],
+        deleteGuide: true,
       },
       {
         heading: "4.4. Right To Be Forgotten",
@@ -214,6 +216,56 @@ function Text({ paras, bullets }: { paras?: string[]; bullets?: string[] }) {
   );
 }
 
+// Step-by-step account deletion guide, linked from the app stores as /privacy/#delete-account.
+function DeleteAccountGuide() {
+  const steps = [
+    ["Go to Profile", "Open your profile from the Gibble app on your phone or tablet."],
+    ["Click on Profile Information", "This opens your personal details and account options."],
+    ["Delete Account", "Tap Delete Account at the bottom of the page."],
+  ];
+  return (
+    <div id="delete-account" className="mt-6 scroll-mt-28 rounded-[1.5rem] bg-cream p-5 sm:p-7">
+      <h4 className="font-display text-xl font-black text-ink sm:text-2xl">How to delete your account</h4>
+      <p className="mt-2">You can delete your Gibble account yourself at any time, from the app:</p>
+      <ol className="mt-4 space-y-3">
+        {steps.map(([title, text], i) => (
+          <li key={title} className="flex gap-3">
+            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-brand text-sm font-black text-white">{i + 1}</span>
+            <span>
+              <span className="font-bold text-ink">{title}.</span> {text}
+            </span>
+          </li>
+        ))}
+      </ol>
+      <p className="mt-3 text-sm font-semibold text-ink">Profile &gt; Profile Information &gt; Delete Account</p>
+
+      <div className="mt-6 grid items-center gap-6 md:grid-cols-[1fr_auto]">
+        <figure className="min-w-0">
+          <TabletFrame screenshot={{ src: "/screens/help/delete-account-tablet.webp", alt: "Gibble on a tablet: the profile page with the Delete Account button highlighted at the bottom" }} className="!w-full" />
+          <figcaption className="mt-2 text-center text-sm">On a tablet</figcaption>
+        </figure>
+        <figure className="mx-auto">
+          <PhoneFrame screenshot={{ src: "/screens/help/delete-account-phone.webp", alt: "Gibble on a phone: the profile page with Delete Account highlighted under Other Information" }} />
+          <figcaption className="mt-2 text-center text-sm">On a phone</figcaption>
+        </figure>
+      </div>
+
+      <h4 className="mt-8 font-sans text-base font-bold tracking-normal text-ink">What happens when you delete your account</h4>
+      <ul className="mt-3 list-disc space-y-2.5 pl-5 marker:text-brand">
+        <li>Your account is closed and you are signed out of Gibble on all your devices.</li>
+        <li>Your profile and the information linked to your account are permanently deleted from our systems, including backups, within 30 days, except where we must keep some data for the legal reasons described above.</li>
+        <li>Deleting your account cannot be undone. If you want to use Gibble again, you will need to create a new account.</li>
+        <li>If you pay for a subscription through the App Store or Google Play, cancel it in your store account as well. Deleting your Gibble account does not cancel a store subscription.</li>
+      </ul>
+
+      <h4 className="mt-8 font-sans text-base font-bold tracking-normal text-ink">Can&apos;t access the app?</h4>
+      <p className="mt-2">
+        Email us at <a href={`mailto:${email}?subject=Delete%20my%20Gibble%20account`} className="font-semibold text-ink underline">{email}</a> from the email address linked to your account, with the subject &ldquo;Delete my Gibble account&rdquo;. We will confirm your request and delete your account and data within 30 days.
+      </p>
+    </div>
+  );
+}
+
 export default function PrivacyPage() {
   return (
     <>
@@ -229,6 +281,11 @@ export default function PrivacyPage() {
                   <a href={`#${s.id}`} className="block rounded-xl px-3 py-2 font-semibold text-ink-soft hover:bg-white hover:text-ink">
                     {s.heading}
                   </a>
+                  {s.id === "rights" && (
+                    <a href="#delete-account" className="ml-3 block rounded-xl px-3 py-1.5 text-ink-soft hover:bg-white hover:text-ink">
+                      How to delete your account
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -243,6 +300,7 @@ export default function PrivacyPage() {
                   <div key={p.heading || `${s.id}-${j}`} className={p.heading ? "mt-8" : "mt-3"}>
                     {p.heading && <h3 className="font-sans text-lg font-bold tracking-normal text-ink">{p.heading}</h3>}
                     <Text paras={p.paras} bullets={p.bullets} />
+                    {p.deleteGuide && <DeleteAccountGuide />}
                   </div>
                 ))}
               </section>
