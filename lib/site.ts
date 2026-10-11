@@ -12,6 +12,12 @@ export const site = {
 
 export const telHref = (phone: string) => `tel:${phone.replace(/\s/g, "")}`;
 
+// Opens a new Gmail message to Gibble, with an optional subject and body filled in.
+export function gmailComposeUrl(subject = "", body = "") {
+  const params = new URLSearchParams({ view: "cm", fs: "1", to: site.email, su: subject, body });
+  return `https://mail.google.com/mail/?${params.toString()}`;
+}
+
 export const nav = [
   { href: "/", label: "Home" },
   { href: "/features/", label: "Features" },
