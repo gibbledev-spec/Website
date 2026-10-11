@@ -3,7 +3,7 @@ import { ContactForm } from "@/components/ContactForm";
 import { PageHero } from "@/components/PageHero";
 import { DownloadCta } from "@/components/sections";
 import { SectionHeading, Sparkle } from "@/components/ui";
-import { site, telHref } from "@/lib/site";
+import { gmailComposeUrl, site, telHref } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About us",
@@ -80,7 +80,7 @@ export default function AboutPage() {
             <p className="mt-3 text-ink-soft">Questions, school plans, or just feedback? We read every message.</p>
             <ul className="mt-6 space-y-3 font-semibold">
               <li>
-                ✉️ <a href={`mailto:${site.email}`} className="hover:text-brand">{site.email}</a>
+                ✉️ <a href={gmailComposeUrl()} target="_blank" rel="noopener noreferrer" className="hover:text-brand">{site.email}</a>
               </li>
               {site.phones.map((phone) => (
                 <li key={phone}>
